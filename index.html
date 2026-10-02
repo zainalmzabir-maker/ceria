@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sistem Penilaian Kebersihan & Keceriaan Kelas</title>
-  <!-- Tailwind CSS CDN -->
+  <!-- Tailwind CSS & Font Awesome CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
@@ -16,15 +16,15 @@
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans min-h-screen pb-12">
 
-  <!-- Header -->
+  <!-- Header Utama -->
   <header class="bg-emerald-700 text-white py-6 px-4 shadow-md">
     <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
       <div>
         <h1 class="text-2xl md:text-3xl font-bold tracking-tight">SISTEM PENILAIAN KEBERSIHAN & KECERIAAN KELAS</h1>
-        <p class="text-emerald-100 text-sm mt-1">Pengisian pantas & penentuan kedudukan ranking mingguan</p>
+        <p class="text-emerald-100 text-sm mt-1">Pengisian pantas, pengiraan markah automatik & ranking secara langsung</p>
       </div>
       <div class="flex gap-2 no-print">
-        <button onclick="window.print()" class="bg-emerald-800 hover:bg-emerald-900 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+        <button onclick="window.print()" class="bg-emerald-800 hover:bg-emerald-900 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition shadow">
           <i class="fa-solid fa-print"></i> Cetak Keputusan
         </button>
       </div>
@@ -41,7 +41,7 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div>
           <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Minggu</label>
-          <input type="text" id="minggu" placeholder="Cth: 12" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+          <input type="text" id="minggu" placeholder="Cth: 14" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
         </div>
         <div>
           <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Tarikh</label>
@@ -53,12 +53,12 @@
         </div>
         <div>
           <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Disediakan Oleh</label>
-          <input type="text" id="penilai" placeholder="Nama Guru / Penilai" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+          <input type="text" id="penilai" placeholder="Nama Guru / Pengawas" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
         </div>
       </div>
     </div>
 
-    <!-- Papan Pemuka Ranking Semasa (Live Leaderboard) -->
+    <!-- Papan Pemuka Ranking Semasa -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       
       <!-- Ranking Menengah Rendah -->
@@ -70,9 +70,7 @@
           <span class="text-xs bg-blue-100 text-blue-800 font-semibold px-2.5 py-0.5 rounded-full">Tingkatan 1 - 3</span>
         </div>
         <div class="space-y-2">
-          <div id="podium-rendah" class="grid grid-cols-3 gap-2 mb-4 text-center">
-            <!-- Dynamic Podium -->
-          </div>
+          <div id="podium-rendah" class="grid grid-cols-3 gap-2 mb-4 text-center"></div>
           <table class="w-full text-sm">
             <thead class="bg-slate-50 text-slate-500 text-xs">
               <tr>
@@ -95,9 +93,7 @@
           <span class="text-xs bg-amber-100 text-amber-800 font-semibold px-2.5 py-0.5 rounded-full">Tingkatan 4 - 5</span>
         </div>
         <div class="space-y-2">
-          <div id="podium-atas" class="grid grid-cols-3 gap-2 mb-4 text-center">
-            <!-- Dynamic Podium -->
-          </div>
+          <div id="podium-atas" class="grid grid-cols-3 gap-2 mb-4 text-center"></div>
           <table class="w-full text-sm">
             <thead class="bg-slate-50 text-slate-500 text-xs">
               <tr>
@@ -113,7 +109,7 @@
 
     </div>
 
-    <!-- Peringatan: Kelas Kurang 15 Markah -->
+    <!-- Peringatan Khas: Kelas Bawah 15 Markah -->
     <div id="alert-kurang-15" class="bg-rose-50 border-l-4 border-rose-500 p-4 rounded-lg hidden">
       <div class="flex items-start">
         <div class="flex-shrink-0">
@@ -126,15 +122,15 @@
       </div>
     </div>
 
-    <!-- Borang Pengisian Markah Mengikut Kelas -->
+    <!-- Borang Input Markah Kelas -->
     <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-200">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4 mb-6">
         <div>
           <h3 class="text-lg font-bold text-slate-800">Borang Pemarkahan Per Kelas</h3>
-          <p class="text-xs text-slate-500">Pilih kelas di bawah dan masukkan markah untuk setiap kriteria.</p>
+          <p class="text-xs text-slate-500">Pilih kelas di bawah dan isi markah mengikut skala borang.</p>
         </div>
         
-        <!-- Pilihan Kelas -->
+        <!-- Pemilih Kelas -->
         <div class="flex items-center gap-2">
           <label class="text-sm font-semibold text-slate-700">Pilih Kelas:</label>
           <select id="select-kelas" onchange="tukarKelas()" class="border-2 border-emerald-600 rounded-lg px-3 py-1.5 font-bold text-emerald-800 text-sm bg-emerald-50 outline-none">
@@ -159,7 +155,6 @@
         </div>
       </div>
 
-      <!-- Kad Kriteria Pemarkahan -->
       <div class="space-y-6">
 
         <!-- 1. Kebersihan (/9) -->
@@ -248,7 +243,7 @@
               <input type="number" min="0" max="3" id="input-parking" oninput="kiraMarkah()" class="w-full border rounded p-2 text-center text-sm font-semibold mt-1">
             </div>
             <div>
-              <label class="text-xs text-slate-600 font-medium">Ganjaran & Kejayaan (0-3)</label>
+              <label class="text-xs text-slate-600 font-medium">Ganjaran & Pencapaian (0-3)</label>
               <input type="number" min="0" max="3" id="input-ganjaran" oninput="kiraMarkah()" class="w-full border rounded p-2 text-center text-sm font-semibold mt-1">
             </div>
             <div>
@@ -264,7 +259,7 @@
             <h4 class="font-bold text-amber-800 text-sm flex items-center gap-2">
               <i class="fa-solid fa-wand-magic-sparkles text-amber-600"></i> 4. KREATIVITI DAN KECERIAAN (Skala: 1 - 5)
             </h4>
-            <p class="text-xs text-slate-500 mt-0.5">Penilaian daya tarikan, keunikan, dan suasana kondusif kelas.</p>
+            <p class="text-xs text-slate-500 mt-0.5">Penilaian daya tarikan visual, keunikan sudut bacaan dan suasana kelas.</p>
           </div>
           <div class="flex items-center gap-3">
             <input type="number" min="1" max="5" id="input-kreativiti" oninput="kiraMarkah()" class="w-24 border rounded p-2 text-center font-bold text-amber-800 text-base">
@@ -272,7 +267,7 @@
           </div>
         </div>
 
-        <!-- Bar Jumlah Markah Semasa Kelas -->
+        <!-- Jumlah Markah & Pengesahan -->
         <div class="bg-emerald-50 border-2 border-emerald-300 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
             <span class="text-xs uppercase font-bold tracking-wider text-emerald-800">Jumlah Markah Keseluruhan Kelas <span id="label-kelas-aktif" class="underline">1S1</span></span>
@@ -286,26 +281,30 @@
       </div>
     </div>
 
-    <!-- Hantar ke Google Sheets -->
+    <!-- Bahagian Simpan ke Google Sheets -->
     <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-200 no-print">
-      <h3 class="text-base font-bold text-slate-800 mb-2 flex items-center gap-2">
-        <i class="fa-solid fa-cloud-arrow-up text-emerald-600"></i> Simpan Data ke Google Sheets
-      </h3>
-      <p class="text-xs text-slate-500 mb-4">
-        Sila masukkan URL Web App Google Apps Script anda di bawah sekali sahaja untuk penghantaran data automatik.
-      </p>
-      <div class="flex flex-col sm:flex-row gap-3">
-        <input type="url" id="gas-url" placeholder="https://script.google.com/macros/s/AKfycb.../exec" class="flex-1 border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none">
-        <button onclick="hantarKeGoogleSheet()" id="btn-hantar" class="bg-slate-800 hover:bg-slate-900 text-white px-6 py-2.5 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition">
-          <i class="fa-solid fa-paper-plane"></i> Hantar Semua Rekod
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+            <i class="fa-solid fa-cloud-arrow-up text-emerald-600"></i> Simpan ke Google Sheets
+          </h3>
+          <p class="text-xs text-slate-500 mt-0.5">
+            Database Terpaut: <span class="font-mono bg-slate-100 px-1.5 py-0.5 rounded text-slate-700">DATABASE KECERIAAN KELAS</span>
+          </p>
+        </div>
+        <button onclick="hantarKeGoogleSheet()" id="btn-hantar" class="w-full sm:w-auto bg-emerald-700 hover:bg-emerald-800 text-white px-6 py-2.5 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition shadow">
+          <i class="fa-solid fa-paper-plane"></i> Hantar Semua Keputusan
         </button>
       </div>
-      <p id="status-hantar" class="text-xs mt-2 font-medium"></p>
+      <p id="status-hantar" class="text-xs mt-3 font-medium"></p>
     </div>
 
   </main>
 
   <script>
+    // URL Google Apps Script yang disediakan
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzCvpkJwVojVGx1OExI7AelT72Zy-PFdRkeqE5a0Rd_DLZBr95RPVzSp5Xb7HkZDAtO_w/exec";
+
     // Senarai kelas
     const senaraiKelas = [
       { id: "1S1", kategori: "Rendah" },
@@ -323,7 +322,6 @@
       { id: "5S3", kategori: "Atas" }
     ];
 
-    // Data skor bagi setiap kelas disimpan dalam memori objek
     const dataSkor = {};
     senaraiKelas.forEach(k => {
       dataSkor[k.id] = {
@@ -338,17 +336,12 @@
 
     let kelasSemasa = "1S1";
 
-    // Setkan tarikh & masa semasa sebagai lalai
     window.addEventListener("DOMContentLoaded", () => {
       const today = new Date();
       document.getElementById("tarikh").value = today.toISOString().split("T")[0];
       const hours = String(today.getHours()).padStart(2, '0');
       const minutes = String(today.getMinutes()).padStart(2, '0');
       document.getElementById("masa").value = `${hours}:${minutes}`;
-
-      // Ambil simpanan URL Web App jika pernah disimpan
-      const savedUrl = localStorage.getItem("gas_keceriaan_url");
-      if (savedUrl) document.getElementById("gas-url").value = savedUrl;
 
       muatDataKelas(kelasSemasa);
       kemaskiniRanking();
@@ -429,7 +422,6 @@
     }
 
     function kemaskiniRanking() {
-      // Bahagikan kepada Rendah & Atas
       const senaraiRendah = senaraiKelas.filter(k => k.kategori === "Rendah").map(k => ({
         kelas: k.id,
         jumlah: dataSkor[k.id].jumlah,
@@ -445,7 +437,7 @@
       paparkanJadual("list-ranking-rendah", "podium-rendah", senaraiRendah);
       paparkanJadual("list-ranking-atas", "podium-atas", senaraiAtas);
 
-      // Cek kelas bawah 15 markah
+      // Semak kelas kurang 15 markah
       const bawah15 = [...senaraiRendah, ...senaraiAtas].filter(k => k.jumlah > 0 && k.jumlah < 15);
       const alertBox = document.getElementById("alert-kurang-15");
       const listSpan = document.getElementById("senarai-kurang-15");
@@ -478,7 +470,6 @@
         tbody.appendChild(tr);
       });
 
-      // Kemaskini Podium 1, 2, 3
       const podium = document.getElementById(podiumId);
       podium.innerHTML = `
         <div class="bg-slate-100 p-2 rounded-lg border">
@@ -501,16 +492,8 @@
 
     async function hantarKeGoogleSheet() {
       simpanKelasKeMemori();
-      const gasUrl = document.getElementById("gas-url").value.trim();
       const statusEl = document.getElementById("status-hantar");
       const btn = document.getElementById("btn-hantar");
-
-      if (!gasUrl) {
-        alert("Sila masukkan URL Google Apps Script Web App terlebih dahulu.");
-        return;
-      }
-
-      localStorage.setItem("gas_keceriaan_url", gasUrl);
 
       const payload = {
         minggu: document.getElementById("minggu").value || "-",
@@ -530,25 +513,25 @@
 
       try {
         btn.disabled = true;
-        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menghantar...`;
-        statusEl.className = "text-xs mt-2 text-slate-500";
-        statusEl.innerText = "Sedang menghantar data ke Google Sheets...";
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sedang Menghantar...`;
+        statusEl.className = "text-xs mt-3 text-slate-500 font-medium";
+        statusEl.innerText = "Menghantar data ke Google Sheets DATABASE KECERIAAN KELAS...";
 
-        await fetch(gasUrl, {
+        await fetch(SCRIPT_URL, {
           method: "POST",
-          mode: "no-cors", // Mengelakkan isu CORS dengan Google Apps Script
+          mode: "no-cors",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
 
-        statusEl.className = "text-xs mt-2 text-emerald-600 font-bold";
-        statusEl.innerText = "✓ Rekod berjaya dihantar ke Google Sheets!";
+        statusEl.className = "text-xs mt-3 text-emerald-600 font-bold";
+        statusEl.innerText = "✓ Rekod berjaya dihantar dan disimpan ke Google Sheets!";
       } catch (err) {
-        statusEl.className = "text-xs mt-2 text-rose-600 font-bold";
-        statusEl.innerText = "✗ Ralat penghantaran: " + err.message;
+        statusEl.className = "text-xs mt-3 text-rose-600 font-bold";
+        statusEl.innerText = "✗ Ralat semasa menghantar: " + err.message;
       } finally {
         btn.disabled = false;
-        btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Hantar Semua Rekod`;
+        btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Hantar Semua Keputusan`;
       }
     }
   </script>
