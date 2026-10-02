@@ -44,7 +44,7 @@
         <img src="logo.png" alt="Logo Sekolah" class="w-10 h-10 sm:w-12 sm:h-12 object-contain bg-white/10 rounded-lg p-1 shadow-sm" onerror="this.onerror=null; this.src='https://placehold.co/48x48?text=Logo';">
         <div>
           <h1 class="font-bold text-base sm:text-lg leading-tight">SISTEM PENILAIAN KEBERSIHAN & KECERIAAN</h1>
-          <p class="text-[11px] sm:text-xs text-emerald-200">Borang Digital Mingguan Sekolah</p>
+          <p class="text-[11px] sm:text-xs text-emerald-200">Jadual Guru Bertugas & Pemantauan Mingguan</p>
         </div>
       </div>
 
@@ -63,25 +63,43 @@
     </div>
   </header>
 
-  <!-- Maklumat Sesi Penilaian -->
+  <!-- Maklumat Sesi Penilaian (Dropdown Bersepadu Jadual Bertugas) -->
   <section class="max-w-7xl mx-auto px-4 mt-3 w-full no-print">
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-3 sm:p-4 grid grid-cols-2 md:grid-cols-4 gap-2.5 text-xs">
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-3 sm:p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 text-xs">
+      
+      <!-- 1. Dropdown Minggu dengan Sela Tarikh -->
       <div>
-        <label class="font-bold text-slate-600 uppercase text-[10px] sm:text-xs">Minggu:</label>
-        <input type="text" id="info-minggu" placeholder="Cth: 12" class="w-full mt-1 border rounded px-2 py-1 font-medium outline-none focus:ring-1 focus:ring-emerald-500">
+        <label class="font-bold text-slate-700 uppercase text-[10px] sm:text-xs flex items-center gap-1">
+          <i class="fa-regular fa-calendar-days text-emerald-600"></i> Minggu Bertugas:
+        </label>
+        <select id="info-minggu" onchange="tukarMingguBertugas()" class="w-full mt-1 border border-emerald-500 rounded px-2 py-1.5 font-bold text-emerald-900 bg-emerald-50/50 outline-none focus:ring-1 focus:ring-emerald-500"></select>
       </div>
+
+      <!-- 2. Tarikh Pemeriksaan Sebenar -->
       <div>
-        <label class="font-bold text-slate-600 uppercase text-[10px] sm:text-xs">Tarikh:</label>
-        <input type="date" id="info-tarikh" class="w-full mt-1 border rounded px-2 py-1 font-medium outline-none focus:ring-1 focus:ring-emerald-500">
+        <label class="font-bold text-slate-700 uppercase text-[10px] sm:text-xs flex items-center gap-1">
+          <i class="fa-regular fa-clock text-emerald-600"></i> Tarikh & Masa Penilaian:
+        </label>
+        <div class="flex gap-1 mt-1">
+          <input type="date" id="info-tarikh" onchange="simpanDataMingguSemasa()" class="w-2/3 border rounded px-2 py-1 font-medium outline-none focus:ring-1 focus:ring-emerald-500">
+          <input type="time" id="info-masa" onchange="simpanDataMingguSemasa()" class="w-1/3 border rounded px-1.5 py-1 font-medium outline-none focus:ring-1 focus:ring-emerald-500">
+        </div>
       </div>
+
+      <!-- 3. Dropdown Guru Penilai (Auto-populate mengikut jadual minggu) -->
       <div>
-        <label class="font-bold text-slate-600 uppercase text-[10px] sm:text-xs">Masa:</label>
-        <input type="time" id="info-masa" class="w-full mt-1 border rounded px-2 py-1 font-medium outline-none focus:ring-1 focus:ring-emerald-500">
+        <label class="font-bold text-slate-700 uppercase text-[10px] sm:text-xs flex items-center gap-1">
+          <i class="fa-solid fa-user-check text-emerald-600"></i> Guru Penilai Bertugas:
+        </label>
+        <select id="info-penilai" onchange="simpanDataMingguSemasa()" class="w-full mt-1 border rounded px-2 py-1.5 font-semibold text-slate-800 bg-white outline-none focus:ring-1 focus:ring-emerald-500"></select>
       </div>
-      <div>
-        <label class="font-bold text-slate-600 uppercase text-[10px] sm:text-xs">Disediakan Oleh:</label>
-        <input type="text" id="info-penilai" placeholder="Nama Guru / Penilai" class="w-full mt-1 border rounded px-2 py-1 font-medium outline-none focus:ring-1 focus:ring-emerald-500">
+
+      <!-- 4. Paparan GKMP Pemantau -->
+      <div class="bg-slate-50 border rounded p-1.5 flex flex-col justify-center">
+        <span class="text-[9px] font-bold text-slate-400 uppercase leading-none">GKMP Pemantau Minggu Ini:</span>
+        <span id="info-gkmp" class="text-[11px] font-bold text-slate-700 mt-1 truncate">-</span>
       </div>
+
     </div>
   </section>
 
@@ -106,7 +124,7 @@
         </div>
         <div class="text-[10px] sm:text-xs text-slate-500 flex items-center gap-1.5">
           <i class="fa-solid fa-arrows-left-right text-emerald-600"></i>
-          <span>Kriteria & kelas terapung (skrol ke kanan untuk kelas lain).</span>
+          <span>Kriteria & kelas terapung. Ubah markah bila-bila masa jika ada pembetulan.</span>
         </div>
       </div>
 
@@ -123,23 +141,19 @@
           <table class="w-full text-xs text-left border-collapse">
             <thead class="text-slate-700 font-bold uppercase text-[10px] sm:text-[11px]">
               <tr class="border-b">
-                <!-- Penjuru Atas Kiri -->
                 <th class="sticky top-0 left-0 z-30 bg-slate-200 py-2.5 px-2 w-[115px] min-w-[115px] max-w-[115px] sm:w-52 sm:min-w-[200px] sm:max-w-none border-r border-b shadow-[2px_2px_4px_-1px_rgba(0,0,0,0.1)] leading-tight">
                   Kriteria Penilaian
                 </th>
-                <!-- Header Kelas -->
-                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">1S1</th>
-                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">1S2</th>
-                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">2S1</th>
-                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">2S2</th>
-                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">3S1</th>
-                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">3S2</th>
-                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">3S3</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px]">1S1</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px]">1S2</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px]">2S1</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px]">2S2</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px]">3S1</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px]">3S2</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px]">3S3</th>
               </tr>
             </thead>
-            <tbody id="tbody-rendah" class="divide-y divide-slate-200">
-              <!-- Dijana secara dinamik oleh JavaScript -->
-            </tbody>
+            <tbody id="tbody-rendah" class="divide-y divide-slate-200"></tbody>
           </table>
         </div>
       </div>
@@ -157,22 +171,18 @@
           <table class="w-full text-xs text-left border-collapse">
             <thead class="text-slate-700 font-bold uppercase text-[10px] sm:text-[11px]">
               <tr class="border-b">
-                <!-- Penjuru Atas Kiri -->
                 <th class="sticky top-0 left-0 z-30 bg-slate-200 py-2.5 px-2 w-[115px] min-w-[115px] max-w-[115px] sm:w-52 sm:min-w-[200px] sm:max-w-none border-r border-b shadow-[2px_2px_4px_-1px_rgba(0,0,0,0.1)] leading-tight">
                   Kriteria Penilaian
                 </th>
-                <!-- Header Kelas -->
-                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">4S1</th>
-                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">4S2</th>
-                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">4S3</th>
-                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">5S1</th>
-                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">5S2</th>
-                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">5S3</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px]">4S1</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px]">4S2</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px]">4S3</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px]">5S1</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px]">5S2</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px]">5S3</th>
               </tr>
             </thead>
-            <tbody id="tbody-atas" class="divide-y divide-slate-200">
-              <!-- Dijana secara dinamik oleh JavaScript -->
-            </tbody>
+            <tbody id="tbody-atas" class="divide-y divide-slate-200"></tbody>
           </table>
         </div>
       </div>
@@ -182,7 +192,6 @@
     <!-- ================= PAGE 2: DASHBOARD ================= -->
     <div id="page-dashboard" class="space-y-4 sm:space-y-6 hidden">
       
-      <!-- Kad Ringkasan Eksekutif -->
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
         <div class="bg-white p-3 sm:p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-2.5 sm:gap-3">
           <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-lg sm:text-xl flex-shrink-0">
@@ -225,7 +234,6 @@
         </div>
       </div>
 
-      <!-- Graf Carta Bar Perbandingan Markah Keseluruhan -->
       <div class="bg-white p-4 sm:p-5 rounded-xl border border-slate-200 shadow-sm">
         <h3 class="font-bold text-slate-800 text-xs sm:text-sm mb-3 flex items-center gap-2">
           <i class="fa-solid fa-chart-column text-emerald-600"></i> Perbandingan Markah Keseluruhan Semua Kelas (/50)
@@ -240,18 +248,21 @@
     <!-- ================= PAGE 3: KEPUTUSAN ================= -->
     <div id="page-keputusan" class="space-y-4 sm:space-y-6 hidden">
       
-      <!-- Bar Tindakan: Simpan & Cetak -->
-      <div class="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3 no-print">
-        <div>
-          <h3 class="font-bold text-slate-800 text-sm sm:text-base">Laporan Rasmi Keputusan Mingguan</h3>
-          <p class="text-[11px] sm:text-xs text-slate-500">Boleh terus dicetak atau dihantar ke Google Sheets (Database).</p>
+      <!-- Bar Tindakan & Pilihan Minggu Keputusan -->
+      <div class="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-center gap-3 no-print">
+        
+        <!-- Pilihan Minggu Pada Keputusan -->
+        <div class="flex items-center gap-2 w-full md:w-auto">
+          <label class="font-bold text-xs text-slate-700 whitespace-nowrap">Pilihan Minggu:</label>
+          <select id="pilih-minggu-keputusan" onchange="tukarMingguDariKeputusan(this.value)" class="border-2 border-emerald-600 rounded-lg px-2.5 py-1.5 font-bold text-emerald-900 bg-emerald-50 text-xs outline-none w-full md:w-auto"></select>
         </div>
-        <div class="flex items-center gap-2 w-full sm:w-auto">
-          <button onclick="window.print()" class="flex-1 sm:flex-none bg-slate-800 hover:bg-slate-900 text-white px-3 sm:px-4 py-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 shadow">
+
+        <div class="flex items-center gap-2 w-full md:w-auto">
+          <button onclick="window.print()" class="flex-1 md:flex-none bg-slate-800 hover:bg-slate-900 text-white px-3 sm:px-4 py-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 shadow">
             <i class="fa-solid fa-print"></i> Cetak / PDF
           </button>
-          <button onclick="hantarKeGoogleSheet()" id="btn-hantar-sheets" class="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 text-white px-4 sm:px-5 py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 shadow transition">
-            <i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Google Sheet
+          <button onclick="hantarKeGoogleSheet()" id="btn-hantar-sheets" class="flex-1 md:flex-none bg-emerald-600 hover:bg-emerald-700 text-white px-4 sm:px-5 py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 shadow transition">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Simpan / Kemaskini ke Google Sheet
           </button>
         </div>
       </div>
@@ -261,15 +272,20 @@
       <!-- Kertas Laporan Rasmi (Sesuai Cetak) -->
       <div class="bg-white p-4 sm:p-8 rounded-xl border border-slate-300 shadow-sm space-y-4 sm:space-y-6">
         
-        <!-- Kepala Surat Rasmi Bersama Logo -->
+        <!-- Kepala Surat Rasmi Bersama Logo & Info Jadual -->
         <div class="text-center border-b pb-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
           <img src="logo.png" alt="Logo Sekolah" class="w-14 h-14 sm:w-16 sm:h-16 object-contain" onerror="this.onerror=null; this.src='https://placehold.co/64x64?text=Logo';">
           <div>
             <h2 class="text-base sm:text-xl font-extrabold tracking-wide text-slate-800">KEPUTUSAN PERTANDINGAN KEBERSIHAN & KECERIAAN KELAS</h2>
-            <div class="text-[11px] sm:text-xs text-slate-600 mt-1.5 flex flex-wrap justify-center gap-4 sm:gap-6 font-semibold">
-              <span>MINGGU: <span id="rep-minggu" class="font-bold text-slate-900">-</span></span>
-              <span>TARIKH: <span id="rep-tarikh" class="font-bold text-slate-900">-</span></span>
+            <div class="text-[11px] sm:text-xs text-slate-600 mt-1.5 flex flex-wrap justify-center gap-3 sm:gap-6 font-semibold">
+              <span class="bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded border border-emerald-200">
+                MINGGU: <span id="rep-minggu" class="font-bold">-</span> (<span id="rep-sela-tarikh" class="font-medium">-</span>)
+              </span>
+              <span>TARIKH PENILAIAN: <span id="rep-tarikh" class="font-bold text-slate-900">-</span></span>
               <span>MASA: <span id="rep-masa" class="font-bold text-slate-900">-</span></span>
+            </div>
+            <div class="text-[10px] sm:text-[11px] text-slate-500 mt-1">
+              GKMP PEMANTAU: <span id="rep-gkmp" class="font-bold text-slate-700">-</span>
             </div>
           </div>
         </div>
@@ -347,14 +363,14 @@
         <!-- Ruangan Tandatangan -->
         <div class="pt-6 border-t flex justify-between text-xs text-slate-700">
           <div>
-            <div>Disediakan oleh:</div>
+            <div>Disediakan oleh (Guru Penilai):</div>
             <div class="mt-10 sm:mt-12 font-bold underline" id="rep-penilai-sign">(...................................................)</div>
-            <div class="text-[10px] sm:text-[11px] text-slate-500">Guru / Penilai Bertugas</div>
+            <div class="text-[10px] sm:text-[11px] text-slate-500" id="rep-penilai-jawatan">Guru Bertugas Mingguan</div>
           </div>
           <div>
-            <div>Disahkan oleh:</div>
-            <div class="mt-10 sm:mt-12 font-bold underline">(...................................................)</div>
-            <div class="text-[10px] sm:text-[11px] text-slate-500">Penolong Kanan HEM / Pengetua</div>
+            <div>Disahkan oleh (GKMP / Pentadbir):</div>
+            <div class="mt-10 sm:mt-12 font-bold underline" id="rep-gkmp-sign">(...................................................)</div>
+            <div class="text-[10px] sm:text-[11px] text-slate-500" id="rep-gkmp-jawatan">GKMP Pemantau / Pengetua</div>
           </div>
         </div>
 
@@ -365,30 +381,260 @@
   </main>
 
   <script>
-    // Konfigurasi Database Terpaut
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzCvpkJwVojVGx1OExI7AelT72Zy-PFdRkeqE5a0Rd_DLZBr95RPVzSp5Xb7HkZDAtO_w/exec";
 
-    // Senarai Kelas
+    // Pangkalan Data Lengkap Jadual Guru Bertugas 2026 (Minggu 23 - Minggu 43)
+    const JADUAL_BERTUGAS = [
+      {
+        minggu: "Minggu 23",
+        selaTarikh: "06.07.2026 - 10.07.2026",
+        tarikhLalai: "2026-07-06",
+        guru: [
+          "Cikgu Tanty binti Ramli (K)",
+          "Cikgu Muhammad Syadza bin Yusof",
+          "Cikgu Siti Nur Hakimah binti Mohd Noor"
+        ],
+        gkmp: "Cikgu Mohd Riduwan bin Mohd Yasan (GKMP Sains dan Matematik)"
+      },
+      {
+        minggu: "Minggu 24",
+        selaTarikh: "13.07.2026 - 17.07.2026",
+        tarikhLalai: "2026-07-13",
+        guru: [
+          "Cikgu Muhammad Amirul Aiman bin Zakaria (K)",
+          "Cikgu Norihan binti Yusof",
+          "Cikgu Norul画Hafidzah binti Hassan".replace('画',''),
+          "Cikgu Norfaizah binti Ismail (K)"
+        ],
+        gkmp: "Cikgu Mohd Nizam bin Subani (GKMP Teknik Vokasional)"
+      },
+      {
+        minggu: "Minggu 25",
+        selaTarikh: "20.07.2026 - 24.07.2026",
+        tarikhLalai: "2026-07-20",
+        guru: [
+          "Cikgu Norfaizah binti Ismail (K)",
+          "Cikgu Lavanya a/p Vejayan",
+          "Cikgu Nur Aina Najwa binti Mohd Nor"
+        ],
+        gkmp: "Cikgu Mohamaad Fadzeli B. Azam (GKMP Sains Kemasyarakatan)"
+      },
+      {
+        minggu: "Minggu 26",
+        selaTarikh: "27.07.2026 - 31.07.2026",
+        tarikhLalai: "2026-07-27",
+        guru: [
+          "Cikgu Muhammad Amirul Aiman bin Zakaria (K)",
+          "Cikgu Tanty binti Ramli",
+          "Cikgu Nur Aina Najwa binti Mohd Nor"
+        ],
+        gkmp: "Cikgu Rohana binti Jasmin (GKMP Bahasa)"
+      },
+      {
+        minggu: "Minggu 27",
+        selaTarikh: "03.08.2026 - 07.08.2026",
+        tarikhLalai: "2026-08-03",
+        guru: [
+          "Cikgu Nor hamizah binti Shafie (K)",
+          "Cikgu Nur Fatin Nazirah binti Rashidi",
+          "Cikgu Tan Bee Kean"
+        ],
+        gkmp: "Cikgu Mohd Nizam bin Subani (GKMP Teknik Vokasional)"
+      },
+      {
+        minggu: "Minggu 28",
+        selaTarikh: "10.08.2026 - 14.08.2026",
+        tarikhLalai: "2026-08-10",
+        guru: [
+          "Cgu Jessica Chan Lai Peng (K)",
+          "Cikgu Siti Haniza binti Imran",
+          "Cikgu Nurul Hamizah binti Mohd Said"
+        ],
+        gkmp: "Cikgu Mohamaad Fadzeli B. Azam (GKMP Sains Kemasyarakatan)"
+      },
+      {
+        minggu: "Minggu 29",
+        selaTarikh: "17.08.2026 - 21.08.2026",
+        tarikhLalai: "2026-08-17",
+        guru: [
+          "Cikgu Tamilvani a/p Krishnan (K)",
+          "Cikgu Zaimah binti Samad",
+          "Cikgu Norhayati binti Md. Zain"
+        ],
+        gkmp: "Cikgu Rohana binti Jasmin (GKMP Bahasa)"
+      },
+      {
+        minggu: "Minggu 30",
+        selaTarikh: "24.08.2026 - 28.08.2026",
+        tarikhLalai: "2026-08-24",
+        guru: [
+          "Cikgu Tanty binti Ramli (K)",
+          "Cikgu Muhammad Syadza bin Yusof",
+          "Cikgu Siti Nur Hakimah binti Mohd Noor"
+        ],
+        gkmp: "Cikgu Mohd Riduwan bin Mohd Yasan (GKMP Sains dan Matematik)"
+      },
+      {
+        minggu: "Minggu 31",
+        selaTarikh: "07.09.2026 - 11.09.2026",
+        tarikhLalai: "2026-09-07",
+        guru: [
+          "Cikgu Muhammad Amirul Aiman bin Zakaria (K)",
+          "Cikgu Norihan binti Yusof",
+          "Cikgu Norul Hafidzah binti Hassan"
+        ],
+        gkmp: "Cikgu Mohamaad Fadzeli B. Azam (GKMP Sains Kemasyarakatan)"
+      },
+      {
+        minggu: "Minggu 32",
+        selaTarikh: "14.09.2026 - 18.09.2026",
+        tarikhLalai: "2026-09-14",
+        guru: [
+          "Cikgu Norfaizah binti Ismail (K)",
+          "Cikgu Lavanya a/p Vejayan",
+          "Cikgu Nur Aina Najwa binti Mohd Nor"
+        ],
+        gkmp: "Cikgu Rohana binti Jasmin (GKMP Bahasa)"
+      },
+      {
+        minggu: "Minggu 33",
+        selaTarikh: "21.09.2026 - 25.09.2026",
+        tarikhLalai: "2026-09-21",
+        guru: [
+          "Cikgu Muhammad Syadza bin Yusof (K)",
+          "Cikgu Norihan binti Yusof",
+          "Cikgu Siti Nur Hakimah binti Mohd Noor"
+        ],
+        gkmp: "Cikgu Mohd Riduwan bin Mohd Yasan (GKMP Sains dan Matematik)"
+      },
+      {
+        minggu: "Minggu 34",
+        selaTarikh: "28.09.2026 - 02.10.2026",
+        tarikhLalai: "2026-09-28",
+        guru: [
+          "Cikgu Nur Fatin Nazirah binti Rashidi (K)",
+          "Cikgu Nor hamizah binti Shafie",
+          "Cikgu Tan Bee Kean"
+        ],
+        gkmp: "Cikgu Mohd Nizam bin Subani (GKMP Teknik Vokasional)"
+      },
+      {
+        minggu: "Minggu 35",
+        selaTarikh: "05.10.2026 - 09.10.2026",
+        tarikhLalai: "2026-10-05",
+        guru: [
+          "Cikgu Siti Haniza binti Imran (K)",
+          "Cgu Jessica Chan Lai Peng",
+          "Cikgu Nurul Hamizah binti Mohd Said"
+        ],
+        gkmp: "Cikgu Rohana binti Jasmin (GKMP Bahasa)"
+      },
+      {
+        minggu: "Minggu 36",
+        selaTarikh: "12.10.2026 - 16.10.2026",
+        tarikhLalai: "2026-10-12",
+        guru: [
+          "Cikgu Zaimah binti Samad (K)",
+          "Cikgu Tamilvani a/p Krishnan",
+          "Cikgu Norhayati binti Md. Zain"
+        ],
+        gkmp: "Cikgu Mohd Riduwan bin Mohd Yasan (GKMP Sains dan Matematik)"
+      },
+      {
+        minggu: "Minggu 37",
+        selaTarikh: "19.10.2026 - 23.10.2026",
+        tarikhLalai: "2026-10-19",
+        guru: [
+          "Cikgu Muhammad Syadza bin Yusof (K)",
+          "Cikgu Tanty binti Ramli",
+          "Cikgu Siti Nur Hakimah binti Mohd Noor"
+        ],
+        gkmp: "Cikgu Mohd Nizam bin Subani (GKMP Teknik Vokasional)"
+      },
+      {
+        minggu: "Minggu 38",
+        selaTarikh: "26.10.2026 - 30.10.2026",
+        tarikhLalai: "2026-10-26",
+        guru: [
+          "Cikgu Norihan binti Yusof (K)",
+          "Cikgu Muhammad Amirul Aiman bin Zakaria",
+          "Cikgu Norul Hafidzah binti Hassan"
+        ],
+        gkmp: "Cikgu Mohamaad Fadzeli B. Azam (GKMP Sains Kemasyarakatan)"
+      },
+      {
+        minggu: "Minggu 39",
+        selaTarikh: "02.11.2026 - 06.11.2026",
+        tarikhLalai: "2026-11-02",
+        guru: [
+          "Cikgu Lavanya a/p Vejayan (K)",
+          "Cikgu Norfaizah binti Ismail",
+          "Cikgu Nur Aina Najwa binti Mohd Nor"
+        ],
+        gkmp: "Cikgu Mohd Riduwan bin Mohd Yasan (GKMP Sains dan Matematik)"
+      },
+      {
+        minggu: "Minggu 40",
+        selaTarikh: "09.11.2026 - 13.11.2026",
+        tarikhLalai: "2026-11-09",
+        guru: [
+          "Cikgu Siti Nur Hakimah binti Mohd Noor (K)",
+          "Cikgu Norul Hafidzah binti Hassan",
+          "Cikgu Nur Aina Najwa binti Mohd Nor"
+        ],
+        gkmp: "Cikgu Mohd Nizam bin Subani (GKMP Teknik Vokasional)"
+      },
+      {
+        minggu: "Minggu 41",
+        selaTarikh: "16.11.2026 - 20.11.2026",
+        tarikhLalai: "2026-11-16",
+        guru: [
+          "Cikgu Tan Bee Kean (K)",
+          "Cikgu Nor hamizah binti Shafie",
+          "Cikgu Nur Fatin Nazirah binti Rashidi"
+        ],
+        gkmp: "Cikgu Mohamaad Fadzeli B. Azam (GKMP Sains Kemasyarakatan)"
+      },
+      {
+        minggu: "Minggu 42",
+        selaTarikh: "23.11.2026 - 27.11.2026",
+        tarikhLalai: "2026-11-23",
+        guru: [
+          "Cikgu Nurul Hamizah binti Mohd Said (K)",
+          "Cgu Jessica Chan Lai Peng",
+          "Cikgu Siti Haniza binti Imran"
+        ],
+        gkmp: "Cikgu Rohana binti Jasmin (GKMP Bahasa)"
+      },
+      {
+        minggu: "Minggu 43",
+        selaTarikh: "30.11.2026 - 04.12.2026",
+        tarikhLalai: "2026-11-30",
+        guru: [
+          "Cikgu Norhayati binti Md. Zain (K)",
+          "Cikgu Tamilvani a/p Krishnan",
+          "Cikgu Zaimah binti Samad"
+        ],
+        gkmp: "Cikgu Mohd Riduwan bin Mohd Yasan (GKMP Sains dan Matematik)"
+      }
+    ];
+
     const KELAS_RENDAH = ["1S1", "1S2", "2S1", "2S2", "3S1", "3S2", "3S3"];
     const KELAS_ATAS   = ["4S1", "4S2", "4S3", "5S1", "5S2", "5S3"];
     const SEMUA_KELAS  = [...KELAS_RENDAH, ...KELAS_ATAS];
 
-    // Struktur Kriteria Borang Penilaian
     const KRITERIA = [
-      // Kategori 1: Kebersihan (0-3)
       { id: "lantai", nama: "Lantai", max: 3, kat: "kebersihan" },
       { id: "tingkap", nama: "Tingkap", max: 3, kat: "kebersihan" },
       { id: "papanPutih", nama: "Papan Putih", max: 3, kat: "kebersihan" },
       { id: "sub_kebersihan", nama: "JUMLAH KEBERSIHAN (/9)", isSub: true, kat: "kebersihan" },
 
-      // Kategori 2: Kekemasan (0-3)
       { id: "alasMeja", nama: "Alas Meja Murid & Guru", max: 3, kat: "kekemasan" },
       { id: "susunanMeja", nama: "Susunan Meja Kerusi", max: 3, kat: "kekemasan" },
       { id: "papanKenyataan", nama: "Papan Kenyataan", max: 3, kat: "kekemasan" },
       { id: "langsir", nama: "Langsir", max: 3, kat: "kekemasan" },
       { id: "sub_kekemasan", nama: "JUMLAH KEKEMASAN (/12)", isSub: true, kat: "kekemasan" },
 
-      // Kategori 3: PAK21 (0-3)
       { id: "carta", nama: "Carta Organisasi", max: 3, kat: "pak21" },
       { id: "bertugas", nama: "Jadual Bertugas", max: 3, kat: "pak21" },
       { id: "jadualKelas", nama: "Jadual Kelas", max: 3, kat: "pak21" },
@@ -399,32 +645,18 @@
       { id: "kataHikmah", nama: "Kata-Kata Hikmah", max: 3, kat: "pak21" },
       { id: "sub_pak21", nama: "JUMLAH PAK21 (/24)", isSub: true, kat: "pak21" },
 
-      // Kategori 4: Kreativiti (1-5)
       { id: "kreativiti", nama: "KREATIVITI & CERIA (1-5)", max: 5, min: 1, kat: "kreativiti" },
-
-      // Jumlah Keseluruhan
       { id: "jumlah_keseluruhan", nama: "JUMLAH BESAR (/50)", isTotal: true }
     ];
 
-    // Data Pemarkahan Setiap Kelas Dalam Memori
-    const dataSkor = {};
-    SEMUA_KELAS.forEach(k => {
-      dataSkor[k] = {
-        lantai: 0, tingkap: 0, papanPutih: 0,
-        alasMeja: 0, susunanMeja: 0, papanKenyataan: 0, langsir: 0,
-        carta: 0, bertugas: 0, jadualKelas: 0, hariLahir: 0,
-        hasilKerja: 0, parking: 0, ganjaran: 0, kataHikmah: 0,
-        kreativiti: 1,
-        kebersihan: 0, kekemasan: 0, pak21: 0, jumlah: 1
-      };
-    });
-
+    let mingguSemasa = "Minggu 35";
+    let dataSkor = {};
     let chartInstance = null;
 
-    // Inisialisasi Apabila Laman Dimuat
     window.addEventListener("DOMContentLoaded", () => {
+      isiPilihanMingguDropdown();
+      
       const now = new Date();
-      document.getElementById("info-tarikh").value = now.toISOString().split("T")[0];
       const hh = String(now.getHours()).padStart(2, '0');
       const mm = String(now.getMinutes()).padStart(2, '0');
       document.getElementById("info-masa").value = `${hh}:${mm}`;
@@ -432,11 +664,128 @@
       binaJadual("tbody-rendah", KELAS_RENDAH);
       binaJadual("tbody-atas", KELAS_ATAS);
 
-      SEMUA_KELAS.forEach(k => kiraMarkahKelas(k));
-      kemaskiniSemua();
+      tukarMingguBertugas(mingguSemasa);
     });
 
-    // Bina Jadual Matriks dengan Dropdown Padat & Sticky Column
+    // Isi Dropdown Minggu pada Penilaian & Keputusan
+    function isiPilihanMingguDropdown() {
+      const selectMinggu = document.getElementById("info-minggu");
+      const selectKeputusan = document.getElementById("pilih-minggu-keputusan");
+      selectMinggu.innerHTML = "";
+      selectKeputusan.innerHTML = "";
+
+      JADUAL_BERTUGAS.forEach(item => {
+        const text = `${item.minggu} (${item.selaTarikh})`;
+        const opt1 = new Option(text, item.minggu);
+        const opt2 = new Option(text, item.minggu);
+        selectMinggu.appendChild(opt1);
+        selectKeputusan.appendChild(opt2);
+      });
+
+      selectMinggu.value = mingguSemasa;
+      selectKeputusan.value = mingguSemasa;
+    }
+
+    // Fungsi Tukar Minggu Bertugas
+    function tukarMingguBertugas(pilihanMinggu) {
+      if (pilihanMinggu) {
+        document.getElementById("info-minggu").value = pilihanMinggu;
+      }
+      mingguSemasa = document.getElementById("info-minggu").value;
+      document.getElementById("pilih-minggu-keputusan").value = mingguSemasa;
+
+      const maklumatJadual = JADUAL_BERTUGAS.find(j => j.minggu === mingguSemasa) || JADUAL_BERTUGAS[0];
+
+      // Kemaskini Dropdown Guru Penilai
+      const selectPenilai = document.getElementById("info-penilai");
+      selectPenilai.innerHTML = "";
+      maklumatJadual.guru.forEach(g => {
+        selectPenilai.appendChild(new Option(g, g));
+      });
+      // Pilihan Manual/Lain jika perlu
+      selectPenilai.appendChild(new Option("Guru Lain (Manual)", "Guru Lain"));
+
+      // Paparan GKMP
+      document.getElementById("info-gkmp").innerText = maklumatJadual.gkmp;
+
+      // Tarikh Penilaian (Lalai kepada hari mula minggu, atau kekalkan jika sudah ada data tersimpan)
+      const simpananData = muatDataDariStorage(mingguSemasa);
+      if (simpananData && simpananData.tarikh) {
+        document.getElementById("info-tarikh").value = simpananData.tarikh;
+      } else {
+        document.getElementById("info-tarikh").value = maklumatJadual.tarikhLalai;
+      }
+
+      if (simpananData && simpananData.penilai) {
+        selectPenilai.value = simpananData.penilai;
+      }
+
+      muatSkorMinggu(mingguSemasa);
+    }
+
+    // Tukar Minggu terus daripada Page Keputusan
+    function tukarMingguDariKeputusan(mingguDipilih) {
+      tukarMingguBertugas(mingguDipilih);
+      bukaTab('keputusan');
+    }
+
+    // Muat Skor Mingguan dari LocalStorage
+    function muatSkorMinggu(mingguId) {
+      const simpanan = muatDataDariStorage(mingguId);
+      
+      dataSkor = {};
+      SEMUA_KELAS.forEach(k => {
+        if (simpanan && simpanan.skor && simpanan.skor[k]) {
+          dataSkor[k] = simpanan.skor[k];
+        } else {
+          dataSkor[k] = {
+            lantai: 0, tingkap: 0, papanPutih: 0,
+            alasMeja: 0, susunanMeja: 0, papanKenyataan: 0, langsir: 0,
+            carta: 0, bertugas: 0, jadualKelas: 0, hariLahir: 0,
+            hasilKerja: 0, parking: 0, ganjaran: 0, kataHikmah: 0,
+            kreativiti: 1,
+            kebersihan: 0, kekemasan: 0, pak21: 0, jumlah: 1
+          };
+        }
+      });
+
+      // Kemaskini input dropdown di jadual
+      SEMUA_KELAS.forEach(k => {
+        KRITERIA.forEach(item => {
+          if (!item.isSub && !item.isTotal) {
+            const el = document.getElementById(`sel-${k}-${item.id}`);
+            if (el) el.value = dataSkor[k][item.id] || (item.min || 0);
+          }
+        });
+        kiraMarkahKelas(k);
+      });
+
+      kemaskiniSemua();
+    }
+
+    function muatDataDariStorage(mingguId) {
+      try {
+        const raw = localStorage.getItem(`keceriaan_${mingguId}`);
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function simpanDataMingguSemasa() {
+      const maklumatJadual = JADUAL_BERTUGAS.find(j => j.minggu === mingguSemasa);
+      const dataToSave = {
+        minggu: mingguSemasa,
+        selaTarikh: maklumatJadual ? maklumatJadual.selaTarikh : "-",
+        tarikh: document.getElementById("info-tarikh").value,
+        masa: document.getElementById("info-masa").value,
+        penilai: document.getElementById("info-penilai").value,
+        gkmp: maklumatJadual ? maklumatJadual.gkmp : "-",
+        skor: dataSkor
+      };
+      localStorage.setItem(`keceriaan_${mingguSemasa}`, JSON.stringify(dataToSave));
+    }
+
     function binaJadual(tbodyId, senaraiKelas) {
       const tbody = document.getElementById(tbodyId);
       tbody.innerHTML = "";
@@ -456,13 +805,11 @@
           bgKriteria = "bg-white";
         }
 
-        // Lajur Nama Kriteria
         const tdNama = document.createElement("td");
         tdNama.className = `sticky left-0 z-10 ${bgKriteria} py-1.5 px-2 border-r border-b shadow-[2px_0_4px_-1px_rgba(0,0,0,0.08)] w-[115px] min-w-[115px] max-w-[115px] sm:w-52 sm:min-w-[200px] sm:max-w-none text-[10px] sm:text-xs leading-tight break-words ${item.isTotal ? 'text-emerald-950 font-extrabold' : (item.isSub ? 'text-slate-800' : 'text-slate-600')}`;
         tdNama.innerText = item.nama;
         tr.appendChild(tdNama);
 
-        // Lajur Input Dropdown bagi setiap kelas
         senaraiKelas.forEach(kelasId => {
           const td = document.createElement("td");
           td.className = "py-1 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px]";
@@ -473,23 +820,23 @@
             td.innerHTML = `<span id="cell-${kelasId}-${item.id}" class="font-bold text-[11px] sm:text-xs text-slate-700">0</span>`;
           } else {
             const select = document.createElement("select");
+            select.id = `sel-${kelasId}-${item.id}`;
             select.className = "w-full bg-white border border-slate-300 rounded px-0.5 py-0.5 sm:py-1 font-bold text-center text-[11px] sm:text-xs focus:ring-1 focus:ring-emerald-500 outline-none";
             
             const minVal = item.min || 0;
             const maxVal = item.max || 3;
 
             for (let v = minVal; v <= maxVal; v++) {
-              const opt = document.createElement("option");
-              opt.value = v;
-              opt.innerText = v;
-              select.appendChild(opt);
+              select.appendChild(new Option(v, v));
             }
 
-            select.value = dataSkor[kelasId][item.id] || minVal;
+            select.value = minVal;
 
             select.onchange = (e) => {
+              if (!dataSkor[kelasId]) dataSkor[kelasId] = {};
               dataSkor[kelasId][item.id] = parseInt(e.target.value) || 0;
               kiraMarkahKelas(kelasId);
+              simpanDataMingguSemasa();
               kemaskiniSemua();
             };
 
@@ -502,9 +849,9 @@
       });
     }
 
-    // Kira markah satu kelas
     function kiraMarkahKelas(kelasId) {
       const d = dataSkor[kelasId];
+      if (!d) return;
       d.kebersihan = (d.lantai || 0) + (d.tingkap || 0) + (d.papanPutih || 0);
       d.kekemasan  = (d.alasMeja || 0) + (d.susunanMeja || 0) + (d.papanKenyataan || 0) + (d.langsir || 0);
       d.pak21      = (d.carta || 0) + (d.bertugas || 0) + (d.jadualKelas || 0) + (d.hariLahir || 0) +
@@ -527,7 +874,6 @@
       }
     }
 
-    // Navigasi 3 Tab Utama
     function bukaTab(tab) {
       ['penilaian', 'dashboard', 'keputusan'].forEach(t => {
         document.getElementById(`page-${t}`).classList.add('hidden');
@@ -545,7 +891,6 @@
       kemaskiniSemua();
     }
 
-    // Tukar Paparan Muka Menengah Rendah / Atas
     function pilihKategoriPenilaian(kat) {
       const btnRendah = document.getElementById("sub-rendah-btn");
       const btnAtas = document.getElementById("sub-atas-btn");
@@ -565,34 +910,38 @@
       }
     }
 
-    // Kemaskini Ranking, Podium & Dashboard
     function kemaskiniSemua() {
       const rankRendah = KELAS_RENDAH.map(k => ({ kelas: k, ...dataSkor[k] })).sort((a,b) => b.jumlah - a.jumlah);
       const rankAtas   = KELAS_ATAS.map(k => ({ kelas: k, ...dataSkor[k] })).sort((a,b) => b.jumlah - a.jumlah);
 
+      const maklumatJadual = JADUAL_BERTUGAS.find(j => j.minggu === mingguSemasa) || JADUAL_BERTUGAS[0];
+
       // Kemaskini Laporan Rasmi
-      document.getElementById("rep-minggu").innerText = document.getElementById("info-minggu").value || "-";
+      document.getElementById("rep-minggu").innerText = mingguSemasa;
+      document.getElementById("rep-sela-tarikh").innerText = maklumatJadual.selaTarikh;
       document.getElementById("rep-tarikh").innerText = document.getElementById("info-tarikh").value || "-";
       document.getElementById("rep-masa").innerText = document.getElementById("info-masa").value || "-";
-      document.getElementById("rep-penilai-sign").innerText = `(${document.getElementById("info-penilai").value || "..................................................."})`;
+      document.getElementById("rep-gkmp").innerText = maklumatJadual.gkmp;
+
+      const penilaiDipilih = document.getElementById("info-penilai").value || "...................................................";
+      document.getElementById("rep-penilai-sign").innerText = `(${penilaiDipilih})`;
+      document.getElementById("rep-gkmp-sign").innerText = `(${maklumatJadual.gkmp.split('(')[0].trim()})`;
 
       // Dashboard KPI
       document.getElementById("dash-top-rendah").innerText = `${rankRendah[0].kelas} (${rankRendah[0].jumlah}m)`;
       document.getElementById("dash-top-atas").innerText = `${rankAtas[0].kelas} (${rankAtas[0].jumlah}m)`;
       
-      const totalSemua = SEMUA_KELAS.reduce((acc, k) => acc + dataSkor[k].jumlah, 0);
+      const totalSemua = SEMUA_KELAS.reduce((acc, k) => acc + (dataSkor[k] ? dataSkor[k].jumlah : 0), 0);
       const purata = (totalSemua / SEMUA_KELAS.length).toFixed(1);
       document.getElementById("dash-purata").innerText = `${purata} / 50`;
 
-      const bawah15 = SEMUA_KELAS.filter(k => dataSkor[k].jumlah < 15);
+      const bawah15 = SEMUA_KELAS.filter(k => dataSkor[k] && dataSkor[k].jumlah < 15);
       document.getElementById("dash-count-bawah15").innerText = `${bawah15.length} Kelas`;
       document.getElementById("rep-bawah15").innerText = bawah15.length > 0 ? bawah15.map(k => `${k} (${dataSkor[k].jumlah}m)`).join(", ") : "Tiada kelas di bawah 15 markah.";
 
-      // Bina Jadual Keputusan Rasmi
       binaJadualKeputusan("table-rank-rendah", rankRendah);
       binaJadualKeputusan("table-rank-atas", rankAtas);
 
-      // Pemenang Disusun Dari Kiri Ke Kanan (1 -> 2 -> 3)
       binaPodium("podium-rendah", rankRendah);
       binaPodium("podium-atas", rankAtas);
     }
@@ -620,7 +969,7 @@
     function binaPodium(podiumId, senarai) {
       const el = document.getElementById(podiumId);
       el.innerHTML = `
-        <!-- 1. TEMPAT PERTAMA (KIRI) -->
+        <!-- TEMPAT PERTAMA (KIRI) -->
         <div class="bg-amber-100/90 p-2 sm:p-2.5 rounded-lg border border-amber-300 shadow-sm flex flex-col justify-between">
           <div class="text-[9px] sm:text-[10px] font-bold text-amber-800 uppercase flex items-center justify-center gap-1">
             <i class="fa-solid fa-crown text-amber-600"></i> Pertama
@@ -629,7 +978,7 @@
           <div class="text-[10px] sm:text-xs font-bold text-amber-800">${senarai[0] ? senarai[0].jumlah + ' m' : '0'}</div>
         </div>
 
-        <!-- 2. TEMPAT KEDUA (TENGAH) -->
+        <!-- TEMPAT KEDUA (TENGAH) -->
         <div class="bg-slate-100 p-2 sm:p-2.5 rounded-lg border border-slate-300 shadow-sm flex flex-col justify-between">
           <div class="text-[9px] sm:text-[10px] font-bold text-slate-600 uppercase flex items-center justify-center gap-1">
             <i class="fa-solid fa-medal text-slate-400"></i> Kedua
@@ -638,7 +987,7 @@
           <div class="text-[10px] sm:text-xs font-semibold text-slate-600">${senarai[1] ? senarai[1].jumlah + ' m' : '0'}</div>
         </div>
 
-        <!-- 3. TEMPAT KETIGA (KANAN) -->
+        <!-- TEMPAT KETIGA (KANAN) -->
         <div class="bg-amber-50/70 p-2 sm:p-2.5 rounded-lg border border-amber-200 shadow-sm flex flex-col justify-between">
           <div class="text-[9px] sm:text-[10px] font-bold text-amber-700 uppercase flex items-center justify-center gap-1">
             <i class="fa-solid fa-award text-amber-600"></i> Ketiga
@@ -649,12 +998,11 @@
       `;
     }
 
-    // Graf Interaktif Chart.js
     function janaGraf() {
       const ctx = document.getElementById('chartMarkah').getContext('2d');
       const labels = SEMUA_KELAS;
-      const data = SEMUA_KELAS.map(k => dataSkor[k].jumlah);
-      const colors = SEMUA_KELAS.map(k => dataSkor[k].jumlah < 15 ? '#f43f5e' : (KELAS_RENDAH.includes(k) ? '#3b82f6' : '#f59e0b'));
+      const data = SEMUA_KELAS.map(k => dataSkor[k] ? dataSkor[k].jumlah : 0);
+      const colors = SEMUA_KELAS.map(k => (dataSkor[k] && dataSkor[k].jumlah < 15) ? '#f43f5e' : (KELAS_RENDAH.includes(k) ? '#3b82f6' : '#f59e0b'));
 
       if (chartInstance) {
         chartInstance.destroy();
@@ -688,16 +1036,20 @@
       });
     }
 
-    // Penghantaran ke Google Sheets
+    // Penghantaran & Kemaskini ke Google Sheets
     async function hantarKeGoogleSheet() {
+      simpanDataMingguSemasa();
       const btn = document.getElementById("btn-hantar-sheets");
       const statusEl = document.getElementById("status-hantar");
+      const maklumatJadual = JADUAL_BERTUGAS.find(j => j.minggu === mingguSemasa) || JADUAL_BERTUGAS[0];
 
       const payload = {
-        minggu: document.getElementById("info-minggu").value || "-",
+        minggu: mingguSemasa,
+        selaTarikh: maklumatJadual.selaTarikh,
         tarikh: document.getElementById("info-tarikh").value || "-",
         masa: document.getElementById("info-masa").value || "-",
         penilai: document.getElementById("info-penilai").value || "-",
+        gkmp: maklumatJadual.gkmp || "-",
         senaraiKelas: SEMUA_KELAS.map(k => ({
           kelas: k,
           kategori: KELAS_RENDAH.includes(k) ? "Menengah Rendah" : "Menengah Atas",
@@ -711,9 +1063,9 @@
 
       try {
         btn.disabled = true;
-        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menghantar...`;
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...`;
         statusEl.className = "text-center font-bold text-xs text-slate-500";
-        statusEl.innerText = "Sedang merekod ke Google Sheets DATABASE KECERIAAN KELAS...";
+        statusEl.innerText = `Sedang mengemaskini rekod ${mingguSemasa} ke Google Sheets...`;
 
         await fetch(WEB_APP_URL, {
           method: "POST",
@@ -723,13 +1075,13 @@
         });
 
         statusEl.className = "text-center font-bold text-xs text-emerald-600";
-        statusEl.innerText = "✓ Rekod berjaya disimpan ke Google Sheets!";
+        statusEl.innerText = `✓ Rekod ${mingguSemasa} berjaya disimpan / dikemaskini dalam Google Sheets!`;
       } catch (err) {
         statusEl.className = "text-center font-bold text-xs text-rose-600";
         statusEl.innerText = "✗ Ralat semasa menghantar: " + err.message;
       } finally {
         btn.disabled = false;
-        btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Google Sheet`;
+        btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Simpan / Kemaskini ke Google Sheet`;
       }
     }
   </script>
