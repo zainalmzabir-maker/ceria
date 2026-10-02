@@ -18,13 +18,18 @@
       .no-print { display: none !important; }
       .print-only { display: block !important; }
       body { background-color: #ffffff; }
+      .table-container { max-height: none !important; overflow: visible !important; }
     }
     .custom-scroll::-webkit-scrollbar {
+      width: 6px;
       height: 6px;
     }
     .custom-scroll::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
+      background: #94a3b8;
       border-radius: 4px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #f1f5f9;
     }
   </style>
 </head>
@@ -99,31 +104,37 @@
             </button>
           </div>
         </div>
-        <div class="text-xs text-slate-500 italic">
-          *Pilih markah secara dropdown bagi setiap kelas. Markah dikira secara langsung.
+        <div class="text-xs text-slate-500 flex items-center gap-2">
+          <i class="fa-solid fa-arrows-up-down-left-right text-emerald-600"></i>
+          <span>Kriteria & nama kelas terapung semasa skrol ke kanan atau bawah.</span>
         </div>
       </div>
 
-      <!-- Jadual Satu Muka: Menengah Rendah -->
+      <!-- Jadual Satu Muka: Menengah Rendah (Sticky Header & Freeze Column) -->
       <div id="muka-rendah" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
         <div class="bg-blue-50 px-4 py-2.5 border-b border-blue-100 flex items-center justify-between">
           <span class="font-bold text-blue-900 text-sm flex items-center gap-2">
-            <i class="fa-solid fa-layer-group text-blue-600"></i> Borang Penilaian: Menengah Rendah (1 Muka Surat)
+            <i class="fa-solid fa-layer-group text-blue-600"></i> Borang Penilaian: Menengah Rendah
           </span>
-          <span class="text-xs bg-blue-200 text-blue-800 font-bold px-2 py-0.5 rounded">7 Kelas</span>
+          <span class="text-xs bg-blue-200 text-blue-800 font-bold px-2 py-0.5 rounded">7 Kelas (1S1 - 3S3)</span>
         </div>
-        <div class="overflow-x-auto custom-scroll">
-          <table class="w-full text-xs text-left border-collapse min-w-[700px]">
-            <thead class="bg-slate-100 text-slate-700 font-bold uppercase text-[11px] border-b">
-              <tr>
-                <th class="py-2.5 px-3 w-64 border-r">Kriteria Penilaian</th>
-                <th class="py-2.5 px-2 text-center border-r">1S1</th>
-                <th class="py-2.5 px-2 text-center border-r">1S2</th>
-                <th class="py-2.5 px-2 text-center border-r">2S1</th>
-                <th class="py-2.5 px-2 text-center border-r">2S2</th>
-                <th class="py-2.5 px-2 text-center border-r">3S1</th>
-                <th class="py-2.5 px-2 text-center border-r">3S2</th>
-                <th class="py-2.5 px-2 text-center">3S3</th>
+        
+        <div class="table-container overflow-auto max-h-[68vh] custom-scroll relative">
+          <table class="w-full text-xs text-left border-collapse min-w-[780px]">
+            <thead class="text-slate-700 font-bold uppercase text-[11px]">
+              <tr class="border-b">
+                <!-- Penjuru Atas Kiri (Sticky Top + Left) -->
+                <th class="sticky top-0 left-0 z-30 bg-slate-200 py-3 px-3 w-64 border-r border-b shadow-[2px_2px_4px_-1px_rgba(0,0,0,0.1)]">
+                  Kriteria Penilaian
+                </th>
+                <!-- Header Kelas (Sticky Top) -->
+                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-r border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">1S1</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-r border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">1S2</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-r border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">2S1</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-r border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">2S2</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-r border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">3S1</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-r border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">3S2</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">3S3</th>
               </tr>
             </thead>
             <tbody id="tbody-rendah" class="divide-y divide-slate-200">
@@ -133,25 +144,30 @@
         </div>
       </div>
 
-      <!-- Jadual Satu Muka: Menengah Atas -->
+      <!-- Jadual Satu Muka: Menengah Atas (Sticky Header & Freeze Column) -->
       <div id="muka-atas" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hidden">
         <div class="bg-amber-50 px-4 py-2.5 border-b border-amber-100 flex items-center justify-between">
           <span class="font-bold text-amber-900 text-sm flex items-center gap-2">
-            <i class="fa-solid fa-layer-group text-amber-600"></i> Borang Penilaian: Menengah Atas (1 Muka Surat)
+            <i class="fa-solid fa-layer-group text-amber-600"></i> Borang Penilaian: Menengah Atas
           </span>
-          <span class="text-xs bg-amber-200 text-amber-800 font-bold px-2 py-0.5 rounded">6 Kelas</span>
+          <span class="text-xs bg-amber-200 text-amber-800 font-bold px-2 py-0.5 rounded">6 Kelas (4S1 - 5S3)</span>
         </div>
-        <div class="overflow-x-auto custom-scroll">
-          <table class="w-full text-xs text-left border-collapse min-w-[650px]">
-            <thead class="bg-slate-100 text-slate-700 font-bold uppercase text-[11px] border-b">
-              <tr>
-                <th class="py-2.5 px-3 w-64 border-r">Kriteria Penilaian</th>
-                <th class="py-2.5 px-2 text-center border-r">4S1</th>
-                <th class="py-2.5 px-2 text-center border-r">4S2</th>
-                <th class="py-2.5 px-2 text-center border-r">4S3</th>
-                <th class="py-2.5 px-2 text-center border-r">5S1</th>
-                <th class="py-2.5 px-2 text-center border-r">5S2</th>
-                <th class="py-2.5 px-2 text-center">5S3</th>
+        
+        <div class="table-container overflow-auto max-h-[68vh] custom-scroll relative">
+          <table class="w-full text-xs text-left border-collapse min-w-[700px]">
+            <thead class="text-slate-700 font-bold uppercase text-[11px]">
+              <tr class="border-b">
+                <!-- Penjuru Atas Kiri (Sticky Top + Left) -->
+                <th class="sticky top-0 left-0 z-30 bg-slate-200 py-3 px-3 w-64 border-r border-b shadow-[2px_2px_4px_-1px_rgba(0,0,0,0.1)]">
+                  Kriteria Penilaian
+                </th>
+                <!-- Header Kelas (Sticky Top) -->
+                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-r border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">4S1</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-r border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">4S2</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-r border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">4S3</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-r border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">5S1</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-r border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">5S2</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">5S3</th>
               </tr>
             </thead>
             <tbody id="tbody-atas" class="divide-y divide-slate-200">
@@ -420,7 +436,7 @@
       kemaskiniSemua();
     });
 
-    // Bina Jadual Matriks dengan Dropdown
+    // Bina Jadual Matriks dengan Dropdown & Sticky Column
     function binaJadual(tbodyId, senaraiKelas) {
       const tbody = document.getElementById(tbodyId);
       tbody.innerHTML = "";
@@ -428,31 +444,35 @@
       KRITERIA.forEach(item => {
         const tr = document.createElement("tr");
 
+        let bgKriteria = "bg-white";
         if (item.isTotal) {
-          tr.className = "bg-emerald-100/80 font-bold border-t-2 border-emerald-400";
+          tr.className = "bg-emerald-100/90 font-bold border-t-2 border-emerald-400";
+          bgKriteria = "bg-emerald-100";
         } else if (item.isSub) {
           tr.className = "bg-slate-100 font-semibold text-slate-700";
+          bgKriteria = "bg-slate-100";
         } else {
           tr.className = "hover:bg-slate-50 transition";
+          bgKriteria = "bg-white";
         }
 
-        // Lajur Nama Kriteria
+        // Lajur Nama Kriteria: Diberi Sticky Left supaya kekal kelihatan semasa skrol ke kanan
         const tdNama = document.createElement("td");
-        tdNama.className = `py-2 px-3 border-r ${item.isTotal ? 'text-emerald-900 font-extrabold text-xs' : (item.isSub ? 'text-slate-800' : 'text-slate-600')}`;
+        tdNama.className = `sticky left-0 z-10 ${bgKriteria} py-2 px-3 border-r border-b shadow-[2px_0_4px_-1px_rgba(0,0,0,0.08)] ${item.isTotal ? 'text-emerald-950 font-extrabold text-xs' : (item.isSub ? 'text-slate-800' : 'text-slate-600')}`;
         tdNama.innerText = item.nama;
         tr.appendChild(tdNama);
 
         // Lajur Input Dropdown bagi setiap kelas
         senaraiKelas.forEach(kelasId => {
           const td = document.createElement("td");
-          td.className = "py-1.5 px-1.5 text-center border-r";
+          td.className = "py-1.5 px-1.5 text-center border-r border-b";
 
           if (item.isTotal) {
             td.innerHTML = `<span id="cell-${kelasId}-total" class="font-extrabold text-sm text-emerald-800">1</span>`;
           } else if (item.isSub) {
             td.innerHTML = `<span id="cell-${kelasId}-${item.id}" class="font-bold text-slate-700">0</span>`;
           } else {
-            // Dropdown Menu
+            // Dropdown Menu Markah
             const select = document.createElement("select");
             select.className = "w-full bg-white border border-slate-300 rounded px-1 py-1 font-semibold text-center text-xs focus:ring-1 focus:ring-emerald-500 outline-none";
             
