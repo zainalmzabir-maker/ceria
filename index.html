@@ -21,8 +21,8 @@
       .table-container { max-height: none !important; overflow: visible !important; }
     }
     .custom-scroll::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
+      width: 5px;
+      height: 5px;
     }
     .custom-scroll::-webkit-scrollbar-thumb {
       background: #94a3b8;
@@ -37,26 +37,26 @@
 
   <!-- Header Navigasi Atas -->
   <header class="bg-emerald-700 text-white shadow-md sticky top-0 z-50 no-print">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-3">
+    <div class="max-w-7xl mx-auto px-4 py-2.5 flex flex-col md:flex-row items-center justify-between gap-3">
       
       <!-- Logo dan Tajuk Sistem -->
-      <div class="flex items-center gap-3">
-        <img src="logo.png" alt="Logo Sekolah" class="w-12 h-12 object-contain bg-white/10 rounded-lg p-1 shadow-sm" onerror="this.onerror=null; this.src='https://placehold.co/48x48?text=Logo';">
+      <div class="flex items-center gap-2.5">
+        <img src="logo.png" alt="Logo Sekolah" class="w-10 h-10 sm:w-12 sm:h-12 object-contain bg-white/10 rounded-lg p-1 shadow-sm" onerror="this.onerror=null; this.src='https://placehold.co/48x48?text=Logo';">
         <div>
-          <h1 class="font-bold text-lg leading-tight">SISTEM PENILAIAN KEBERSIHAN & KECERIAAN</h1>
-          <p class="text-xs text-emerald-200">Borang Digital Mingguan Sekolah</p>
+          <h1 class="font-bold text-base sm:text-lg leading-tight">SISTEM PENILAIAN KEBERSIHAN & KECERIAAN</h1>
+          <p class="text-[11px] sm:text-xs text-emerald-200">Borang Digital Mingguan Sekolah</p>
         </div>
       </div>
 
       <!-- 3 Tab Menu Utama -->
-      <nav class="flex bg-emerald-800/80 p-1 rounded-xl shadow-inner text-sm font-semibold">
-        <button id="nav-penilaian" onclick="bukaTab('penilaian')" class="px-4 py-2 rounded-lg bg-white text-emerald-800 shadow transition flex items-center gap-2">
+      <nav class="flex bg-emerald-800/80 p-1 rounded-xl shadow-inner text-xs sm:text-sm font-semibold">
+        <button id="nav-penilaian" onclick="bukaTab('penilaian')" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-white text-emerald-800 shadow transition flex items-center gap-1.5 sm:gap-2">
           <i class="fa-solid fa-pen-to-square"></i> 1. Penilaian
         </button>
-        <button id="nav-dashboard" onclick="bukaTab('dashboard')" class="px-4 py-2 rounded-lg text-emerald-100 hover:text-white transition flex items-center gap-2">
+        <button id="nav-dashboard" onclick="bukaTab('dashboard')" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-emerald-100 hover:text-white transition flex items-center gap-1.5 sm:gap-2">
           <i class="fa-solid fa-chart-pie"></i> 2. Dashboard
         </button>
-        <button id="nav-keputusan" onclick="bukaTab('keputusan')" class="px-4 py-2 rounded-lg text-emerald-100 hover:text-white transition flex items-center gap-2">
+        <button id="nav-keputusan" onclick="bukaTab('keputusan')" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-emerald-100 hover:text-white transition flex items-center gap-1.5 sm:gap-2">
           <i class="fa-solid fa-trophy"></i> 3. Keputusan
         </button>
       </nav>
@@ -64,77 +64,77 @@
   </header>
 
   <!-- Maklumat Sesi Penilaian -->
-  <section class="max-w-7xl mx-auto px-4 mt-4 w-full no-print">
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+  <section class="max-w-7xl mx-auto px-4 mt-3 w-full no-print">
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-3 sm:p-4 grid grid-cols-2 md:grid-cols-4 gap-2.5 text-xs">
       <div>
-        <label class="font-bold text-slate-600 uppercase">Minggu:</label>
-        <input type="text" id="info-minggu" placeholder="Cth: 12" class="w-full mt-1 border rounded px-2.5 py-1.5 font-medium outline-none focus:ring-1 focus:ring-emerald-500">
+        <label class="font-bold text-slate-600 uppercase text-[10px] sm:text-xs">Minggu:</label>
+        <input type="text" id="info-minggu" placeholder="Cth: 12" class="w-full mt-1 border rounded px-2 py-1 font-medium outline-none focus:ring-1 focus:ring-emerald-500">
       </div>
       <div>
-        <label class="font-bold text-slate-600 uppercase">Tarikh:</label>
-        <input type="date" id="info-tarikh" class="w-full mt-1 border rounded px-2.5 py-1.5 font-medium outline-none focus:ring-1 focus:ring-emerald-500">
+        <label class="font-bold text-slate-600 uppercase text-[10px] sm:text-xs">Tarikh:</label>
+        <input type="date" id="info-tarikh" class="w-full mt-1 border rounded px-2 py-1 font-medium outline-none focus:ring-1 focus:ring-emerald-500">
       </div>
       <div>
-        <label class="font-bold text-slate-600 uppercase">Masa:</label>
-        <input type="time" id="info-masa" class="w-full mt-1 border rounded px-2.5 py-1.5 font-medium outline-none focus:ring-1 focus:ring-emerald-500">
+        <label class="font-bold text-slate-600 uppercase text-[10px] sm:text-xs">Masa:</label>
+        <input type="time" id="info-masa" class="w-full mt-1 border rounded px-2 py-1 font-medium outline-none focus:ring-1 focus:ring-emerald-500">
       </div>
       <div>
-        <label class="font-bold text-slate-600 uppercase">Disediakan Oleh:</label>
-        <input type="text" id="info-penilai" placeholder="Nama Guru / Penilai" class="w-full mt-1 border rounded px-2.5 py-1.5 font-medium outline-none focus:ring-1 focus:ring-emerald-500">
+        <label class="font-bold text-slate-600 uppercase text-[10px] sm:text-xs">Disediakan Oleh:</label>
+        <input type="text" id="info-penilai" placeholder="Nama Guru / Penilai" class="w-full mt-1 border rounded px-2 py-1 font-medium outline-none focus:ring-1 focus:ring-emerald-500">
       </div>
     </div>
   </section>
 
   <!-- KANDUNGAN HALAMAN -->
-  <main class="max-w-7xl mx-auto px-4 py-4 w-full flex-1">
+  <main class="max-w-7xl mx-auto px-2 sm:px-4 py-3 sm:py-4 w-full flex-1">
 
     <!-- ================= PAGE 1: PENILAIAN ================= -->
-    <div id="page-penilaian" class="space-y-4">
+    <div id="page-penilaian" class="space-y-3">
       
       <!-- Sub-Pilihan Kategori: Menengah Rendah vs Menengah Atas -->
-      <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <div class="flex items-center gap-2">
-          <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Kategori Penilaian:</span>
-          <div class="inline-flex bg-slate-100 p-1 rounded-lg">
-            <button id="sub-rendah-btn" onclick="pilihKategoriPenilaian('rendah')" class="px-4 py-1.5 rounded-md font-bold text-xs bg-emerald-600 text-white shadow transition">
-              <i class="fa-solid fa-users mr-1"></i> Menengah Rendah (1S1 - 3S3)
+      <div class="bg-white p-2.5 sm:p-3 rounded-xl shadow-sm border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-2.5">
+        <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
+          <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider hidden sm:inline">Kategori:</span>
+          <div class="inline-flex bg-slate-100 p-1 rounded-lg w-full sm:w-auto">
+            <button id="sub-rendah-btn" onclick="pilihKategoriPenilaian('rendah')" class="flex-1 sm:flex-none px-3 py-1.5 rounded-md font-bold text-xs bg-emerald-600 text-white shadow transition text-center">
+              <i class="fa-solid fa-users mr-1"></i> Men. Rendah
             </button>
-            <button id="sub-atas-btn" onclick="pilihKategoriPenilaian('atas')" class="px-4 py-1.5 rounded-md font-bold text-xs text-slate-600 hover:text-emerald-700 transition">
-              <i class="fa-solid fa-user-graduate mr-1"></i> Menengah Atas (4S1 - 5S3)
+            <button id="sub-atas-btn" onclick="pilihKategoriPenilaian('atas')" class="flex-1 sm:flex-none px-3 py-1.5 rounded-md font-bold text-xs text-slate-600 hover:text-emerald-700 transition text-center">
+              <i class="fa-solid fa-user-graduate mr-1"></i> Men. Atas
             </button>
           </div>
         </div>
-        <div class="text-xs text-slate-500 flex items-center gap-2">
-          <i class="fa-solid fa-arrows-up-down-left-right text-emerald-600"></i>
-          <span>Kriteria & nama kelas terapung semasa skrol ke kanan atau bawah.</span>
+        <div class="text-[10px] sm:text-xs text-slate-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-arrows-left-right text-emerald-600"></i>
+          <span>Kriteria & kelas terapung (skrol ke kanan untuk kelas lain).</span>
         </div>
       </div>
 
-      <!-- Jadual Satu Muka: Menengah Rendah (Sticky Header & Freeze Column) -->
+      <!-- Jadual Satu Muka: Menengah Rendah (Sticky Header & Freeze Column - Mesra Mobile) -->
       <div id="muka-rendah" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-        <div class="bg-blue-50 px-4 py-2.5 border-b border-blue-100 flex items-center justify-between">
-          <span class="font-bold text-blue-900 text-sm flex items-center gap-2">
-            <i class="fa-solid fa-layer-group text-blue-600"></i> Borang Penilaian: Menengah Rendah
+        <div class="bg-blue-50 px-3 py-2 border-b border-blue-100 flex items-center justify-between">
+          <span class="font-bold text-blue-900 text-xs sm:text-sm flex items-center gap-1.5">
+            <i class="fa-solid fa-layer-group text-blue-600"></i> Menengah Rendah (1 Muka Surat)
           </span>
-          <span class="text-xs bg-blue-200 text-blue-800 font-bold px-2 py-0.5 rounded">7 Kelas (1S1 - 3S3)</span>
+          <span class="text-[10px] sm:text-xs bg-blue-200 text-blue-800 font-bold px-2 py-0.5 rounded">7 Kelas (1S1 - 3S3)</span>
         </div>
         
-        <div class="table-container overflow-auto max-h-[68vh] custom-scroll relative">
-          <table class="w-full text-xs text-left border-collapse min-w-[780px]">
-            <thead class="text-slate-700 font-bold uppercase text-[11px]">
+        <div class="table-container overflow-auto max-h-[70vh] custom-scroll relative">
+          <table class="w-full text-xs text-left border-collapse">
+            <thead class="text-slate-700 font-bold uppercase text-[10px] sm:text-[11px]">
               <tr class="border-b">
-                <!-- Penjuru Atas Kiri (Sticky Top + Left) -->
-                <th class="sticky top-0 left-0 z-30 bg-slate-200 py-3 px-3 w-64 border-r border-b shadow-[2px_2px_4px_-1px_rgba(0,0,0,0.1)]">
+                <!-- Penjuru Atas Kiri (Sticky Top + Left - Compact Mobile) -->
+                <th class="sticky top-0 left-0 z-30 bg-slate-200 py-2.5 px-2 w-[115px] min-w-[115px] max-w-[115px] sm:w-52 sm:min-w-[200px] sm:max-w-none border-r border-b shadow-[2px_2px_4px_-1px_rgba(0,0,0,0.1)] leading-tight">
                   Kriteria Penilaian
                 </th>
-                <!-- Header Kelas (Sticky Top) -->
-                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-r border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">1S1</th>
-                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-r border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">1S2</th>
-                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-r border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">2S1</th>
-                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-r border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">2S2</th>
-                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-r border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">3S1</th>
-                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-r border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">3S2</th>
-                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">3S3</th>
+                <!-- Header Kelas (Sticky Top - Compact Width) -->
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">1S1</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">1S2</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">2S1</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">2S2</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">3S1</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">3S2</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">3S3</th>
               </tr>
             </thead>
             <tbody id="tbody-rendah" class="divide-y divide-slate-200">
@@ -144,30 +144,30 @@
         </div>
       </div>
 
-      <!-- Jadual Satu Muka: Menengah Atas (Sticky Header & Freeze Column) -->
+      <!-- Jadual Satu Muka: Menengah Atas (Sticky Header & Freeze Column - Mesra Mobile) -->
       <div id="muka-atas" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hidden">
-        <div class="bg-amber-50 px-4 py-2.5 border-b border-amber-100 flex items-center justify-between">
-          <span class="font-bold text-amber-900 text-sm flex items-center gap-2">
-            <i class="fa-solid fa-layer-group text-amber-600"></i> Borang Penilaian: Menengah Atas
+        <div class="bg-amber-50 px-3 py-2 border-b border-amber-100 flex items-center justify-between">
+          <span class="font-bold text-amber-900 text-xs sm:text-sm flex items-center gap-1.5">
+            <i class="fa-solid fa-layer-group text-amber-600"></i> Menengah Atas (1 Muka Surat)
           </span>
-          <span class="text-xs bg-amber-200 text-amber-800 font-bold px-2 py-0.5 rounded">6 Kelas (4S1 - 5S3)</span>
+          <span class="text-[10px] sm:text-xs bg-amber-200 text-amber-800 font-bold px-2 py-0.5 rounded">6 Kelas (4S1 - 5S3)</span>
         </div>
         
-        <div class="table-container overflow-auto max-h-[68vh] custom-scroll relative">
-          <table class="w-full text-xs text-left border-collapse min-w-[700px]">
-            <thead class="text-slate-700 font-bold uppercase text-[11px]">
+        <div class="table-container overflow-auto max-h-[70vh] custom-scroll relative">
+          <table class="w-full text-xs text-left border-collapse">
+            <thead class="text-slate-700 font-bold uppercase text-[10px] sm:text-[11px]">
               <tr class="border-b">
-                <!-- Penjuru Atas Kiri (Sticky Top + Left) -->
-                <th class="sticky top-0 left-0 z-30 bg-slate-200 py-3 px-3 w-64 border-r border-b shadow-[2px_2px_4px_-1px_rgba(0,0,0,0.1)]">
+                <!-- Penjuru Atas Kiri (Sticky Top + Left - Compact Mobile) -->
+                <th class="sticky top-0 left-0 z-30 bg-slate-200 py-2.5 px-2 w-[115px] min-w-[115px] max-w-[115px] sm:w-52 sm:min-w-[200px] sm:max-w-none border-r border-b shadow-[2px_2px_4px_-1px_rgba(0,0,0,0.1)] leading-tight">
                   Kriteria Penilaian
                 </th>
-                <!-- Header Kelas (Sticky Top) -->
-                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-r border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">4S1</th>
-                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-r border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">4S2</th>
-                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-r border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">4S3</th>
-                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-r border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">5S1</th>
-                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-r border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">5S2</th>
-                <th class="sticky top-0 z-20 bg-slate-100 py-3 px-2 text-center border-b min-w-[75px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">5S3</th>
+                <!-- Header Kelas (Sticky Top - Compact Width) -->
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">4S1</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">4S2</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">4S3</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">5S1</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">5S2</th>
+                <th class="sticky top-0 z-20 bg-slate-100 py-2 px-1 text-center border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.06)]">5S3</th>
               </tr>
             </thead>
             <tbody id="tbody-atas" class="divide-y divide-slate-200">
@@ -180,57 +180,57 @@
     </div>
 
     <!-- ================= PAGE 2: DASHBOARD ================= -->
-    <div id="page-dashboard" class="space-y-6 hidden">
+    <div id="page-dashboard" class="space-y-4 sm:space-y-6 hidden">
       
       <!-- Kad Ringkasan Eksekutif -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3">
-          <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xl">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+        <div class="bg-white p-3 sm:p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-2.5 sm:gap-3">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-lg sm:text-xl flex-shrink-0">
             <i class="fa-solid fa-trophy"></i>
           </div>
           <div>
-            <div class="text-[11px] text-slate-500 font-bold uppercase">Teratas (Men. Rendah)</div>
-            <div class="text-lg font-extrabold text-blue-700" id="dash-top-rendah">-</div>
+            <div class="text-[10px] sm:text-[11px] text-slate-500 font-bold uppercase leading-tight">Teratas (Rendah)</div>
+            <div class="text-sm sm:text-lg font-extrabold text-blue-700" id="dash-top-rendah">-</div>
           </div>
         </div>
 
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3">
-          <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center text-xl">
+        <div class="bg-white p-3 sm:p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-2.5 sm:gap-3">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center text-lg sm:text-xl flex-shrink-0">
             <i class="fa-solid fa-crown"></i>
           </div>
           <div>
-            <div class="text-[11px] text-slate-500 font-bold uppercase">Teratas (Men. Atas)</div>
-            <div class="text-lg font-extrabold text-amber-700" id="dash-top-atas">-</div>
+            <div class="text-[10px] sm:text-[11px] text-slate-500 font-bold uppercase leading-tight">Teratas (Atas)</div>
+            <div class="text-sm sm:text-lg font-extrabold text-amber-700" id="dash-top-atas">-</div>
           </div>
         </div>
 
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3">
-          <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center text-xl">
+        <div class="bg-white p-3 sm:p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-2.5 sm:gap-3">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center text-lg sm:text-xl flex-shrink-0">
             <i class="fa-solid fa-calculator"></i>
           </div>
           <div>
-            <div class="text-[11px] text-slate-500 font-bold uppercase">Purata Markah Sekolah</div>
-            <div class="text-lg font-extrabold text-emerald-700" id="dash-purata">0 / 50</div>
+            <div class="text-[10px] sm:text-[11px] text-slate-500 font-bold uppercase leading-tight">Purata Sekolah</div>
+            <div class="text-sm sm:text-lg font-extrabold text-emerald-700" id="dash-purata">0 / 50</div>
           </div>
         </div>
 
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3">
-          <div class="w-12 h-12 bg-rose-100 text-rose-600 rounded-lg flex items-center justify-center text-xl">
+        <div class="bg-white p-3 sm:p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-2.5 sm:gap-3">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 bg-rose-100 text-rose-600 rounded-lg flex items-center justify-center text-lg sm:text-xl flex-shrink-0">
             <i class="fa-solid fa-triangle-exclamation"></i>
           </div>
           <div>
-            <div class="text-[11px] text-slate-500 font-bold uppercase">Markah &lt; 15 Markah</div>
-            <div class="text-lg font-extrabold text-rose-700" id="dash-count-bawah15">0 Kelas</div>
+            <div class="text-[10px] sm:text-[11px] text-slate-500 font-bold uppercase leading-tight">&lt; 15 Markah</div>
+            <div class="text-sm sm:text-lg font-extrabold text-rose-700" id="dash-count-bawah15">0 Kelas</div>
           </div>
         </div>
       </div>
 
       <!-- Graf Carta Bar Perbandingan Markah Keseluruhan -->
-      <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-        <h3 class="font-bold text-slate-800 text-sm mb-4 flex items-center gap-2">
+      <div class="bg-white p-4 sm:p-5 rounded-xl border border-slate-200 shadow-sm">
+        <h3 class="font-bold text-slate-800 text-xs sm:text-sm mb-3 flex items-center gap-2">
           <i class="fa-solid fa-chart-column text-emerald-600"></i> Perbandingan Markah Keseluruhan Semua Kelas (/50)
         </h3>
-        <div class="w-full h-80">
+        <div class="w-full h-72 sm:h-80">
           <canvas id="chartMarkah"></canvas>
         </div>
       </div>
@@ -238,19 +238,19 @@
     </div>
 
     <!-- ================= PAGE 3: KEPUTUSAN ================= -->
-    <div id="page-keputusan" class="space-y-6 hidden">
+    <div id="page-keputusan" class="space-y-4 sm:space-y-6 hidden">
       
       <!-- Bar Tindakan: Simpan & Cetak -->
-      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3 no-print">
+      <div class="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3 no-print">
         <div>
-          <h3 class="font-bold text-slate-800 text-base">Laporan Rasmi Keputusan Mingguan</h3>
-          <p class="text-xs text-slate-500">Boleh terus dicetak atau dihantar ke Google Sheets (Database).</p>
+          <h3 class="font-bold text-slate-800 text-sm sm:text-base">Laporan Rasmi Keputusan Mingguan</h3>
+          <p class="text-[11px] sm:text-xs text-slate-500">Boleh terus dicetak atau dihantar ke Google Sheets (Database).</p>
         </div>
         <div class="flex items-center gap-2 w-full sm:w-auto">
-          <button onclick="window.print()" class="flex-1 sm:flex-none bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-2 shadow">
-            <i class="fa-solid fa-print"></i> Cetak / Simpan PDF
+          <button onclick="window.print()" class="flex-1 sm:flex-none bg-slate-800 hover:bg-slate-900 text-white px-3 sm:px-4 py-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 shadow">
+            <i class="fa-solid fa-print"></i> Cetak / PDF
           </button>
-          <button onclick="hantarKeGoogleSheet()" id="btn-hantar-sheets" class="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-2 shadow transition">
+          <button onclick="hantarKeGoogleSheet()" id="btn-hantar-sheets" class="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 text-white px-4 sm:px-5 py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 shadow transition">
             <i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Google Sheet
           </button>
         </div>
@@ -259,14 +259,14 @@
       <div id="status-hantar" class="text-center font-bold text-xs no-print"></div>
 
       <!-- Kertas Laporan Rasmi (Sesuai Cetak) -->
-      <div class="bg-white p-6 sm:p-8 rounded-xl border border-slate-300 shadow-sm space-y-6">
+      <div class="bg-white p-4 sm:p-8 rounded-xl border border-slate-300 shadow-sm space-y-4 sm:space-y-6">
         
         <!-- Kepala Surat Rasmi Bersama Logo -->
-        <div class="text-center border-b pb-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <img src="logo.png" alt="Logo Sekolah" class="w-16 h-16 object-contain" onerror="this.onerror=null; this.src='https://placehold.co/64x64?text=Logo';">
+        <div class="text-center border-b pb-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+          <img src="logo.png" alt="Logo Sekolah" class="w-14 h-14 sm:w-16 sm:h-16 object-contain" onerror="this.onerror=null; this.src='https://placehold.co/64x64?text=Logo';">
           <div>
-            <h2 class="text-xl font-extrabold tracking-wide text-slate-800">KEPUTUSAN PERTANDINGAN KEBERSIHAN & KECERIAAN KELAS</h2>
-            <div class="text-xs text-slate-600 mt-2 flex flex-wrap justify-center gap-6 font-semibold">
+            <h2 class="text-base sm:text-xl font-extrabold tracking-wide text-slate-800">KEPUTUSAN PERTANDINGAN KEBERSIHAN & KECERIAAN KELAS</h2>
+            <div class="text-[11px] sm:text-xs text-slate-600 mt-1.5 flex flex-wrap justify-center gap-4 sm:gap-6 font-semibold">
               <span>MINGGU: <span id="rep-minggu" class="font-bold text-slate-900">-</span></span>
               <span>TARIKH: <span id="rep-tarikh" class="font-bold text-slate-900">-</span></span>
               <span>MASA: <span id="rep-masa" class="font-bold text-slate-900">-</span></span>
@@ -275,19 +275,19 @@
         </div>
 
         <!-- Kad Podium / Juara 1, 2, 3 -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
           
           <!-- Podium Rendah -->
-          <div class="border rounded-xl p-4 bg-blue-50/50">
-            <h4 class="font-bold text-blue-900 text-xs uppercase mb-3 flex items-center gap-1.5">
+          <div class="border rounded-xl p-3 sm:p-4 bg-blue-50/50">
+            <h4 class="font-bold text-blue-900 text-xs uppercase mb-2 sm:mb-3 flex items-center gap-1.5">
               <i class="fa-solid fa-medal text-blue-600"></i> Pemenang Menengah Rendah
             </h4>
             <div id="podium-rendah" class="grid grid-cols-3 gap-2 text-center text-xs"></div>
           </div>
 
           <!-- Podium Atas -->
-          <div class="border rounded-xl p-4 bg-amber-50/50">
-            <h4 class="font-bold text-amber-900 text-xs uppercase mb-3 flex items-center gap-1.5">
+          <div class="border rounded-xl p-3 sm:p-4 bg-amber-50/50">
+            <h4 class="font-bold text-amber-900 text-xs uppercase mb-2 sm:mb-3 flex items-center gap-1.5">
               <i class="fa-solid fa-trophy text-amber-600"></i> Pemenang Menengah Atas
             </h4>
             <div id="podium-atas" class="grid grid-cols-3 gap-2 text-center text-xs"></div>
@@ -296,21 +296,21 @@
         </div>
 
         <!-- Jadual Ranking Rasmi -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           
           <!-- Jadual Kedudukan Rendah -->
-          <div>
+          <div class="overflow-x-auto">
             <h4 class="font-bold text-slate-800 text-xs mb-2 border-b pb-1">Kedudukan Menengah Rendah (1S1 - 3S3)</h4>
             <table class="w-full text-xs">
-              <thead class="bg-slate-100 text-slate-600">
+              <thead class="bg-slate-100 text-slate-600 text-[10px] sm:text-xs">
                 <tr>
-                  <th class="py-2 px-2 text-center">Ked.</th>
-                  <th class="py-2 px-2 text-left">Kelas</th>
-                  <th class="py-2 px-2 text-center">Keb. (/9)</th>
-                  <th class="py-2 px-2 text-center">Kek. (/12)</th>
-                  <th class="py-2 px-2 text-center">PAK21 (/24)</th>
-                  <th class="py-2 px-2 text-center">Kre. (/5)</th>
-                  <th class="py-2 px-2 text-right">Jumlah (/50)</th>
+                  <th class="py-1.5 px-1.5 text-center">Ked.</th>
+                  <th class="py-1.5 px-1.5 text-left">Kelas</th>
+                  <th class="py-1.5 px-1 text-center">Keb. (/9)</th>
+                  <th class="py-1.5 px-1 text-center">Kek. (/12)</th>
+                  <th class="py-1.5 px-1 text-center">PAK21 (/24)</th>
+                  <th class="py-1.5 px-1 text-center">Kre. (/5)</th>
+                  <th class="py-1.5 px-1.5 text-right">Jumlah (/50)</th>
                 </tr>
               </thead>
               <tbody id="table-rank-rendah" class="divide-y divide-slate-100"></tbody>
@@ -318,18 +318,18 @@
           </div>
 
           <!-- Jadual Kedudukan Atas -->
-          <div>
+          <div class="overflow-x-auto">
             <h4 class="font-bold text-slate-800 text-xs mb-2 border-b pb-1">Kedudukan Menengah Atas (4S1 - 5S3)</h4>
             <table class="w-full text-xs">
-              <thead class="bg-slate-100 text-slate-600">
+              <thead class="bg-slate-100 text-slate-600 text-[10px] sm:text-xs">
                 <tr>
-                  <th class="py-2 px-2 text-center">Ked.</th>
-                  <th class="py-2 px-2 text-left">Kelas</th>
-                  <th class="py-2 px-2 text-center">Keb. (/9)</th>
-                  <th class="py-2 px-2 text-center">Kek. (/12)</th>
-                  <th class="py-2 px-2 text-center">PAK21 (/24)</th>
-                  <th class="py-2 px-2 text-center">Kre. (/5)</th>
-                  <th class="py-2 px-2 text-right">Jumlah (/50)</th>
+                  <th class="py-1.5 px-1.5 text-center">Ked.</th>
+                  <th class="py-1.5 px-1.5 text-left">Kelas</th>
+                  <th class="py-1.5 px-1 text-center">Keb. (/9)</th>
+                  <th class="py-1.5 px-1 text-center">Kek. (/12)</th>
+                  <th class="py-1.5 px-1 text-center">PAK21 (/24)</th>
+                  <th class="py-1.5 px-1 text-center">Kre. (/5)</th>
+                  <th class="py-1.5 px-1.5 text-right">Jumlah (/50)</th>
                 </tr>
               </thead>
               <tbody id="table-rank-atas" class="divide-y divide-slate-100"></tbody>
@@ -348,13 +348,13 @@
         <div class="pt-6 border-t flex justify-between text-xs text-slate-700">
           <div>
             <div>Disediakan oleh:</div>
-            <div class="mt-12 font-bold underline" id="rep-penilai-sign">(...................................................)</div>
-            <div class="text-[11px] text-slate-500">Guru / Penilai Bertugas</div>
+            <div class="mt-10 sm:mt-12 font-bold underline" id="rep-penilai-sign">(...................................................)</div>
+            <div class="text-[10px] sm:text-[11px] text-slate-500">Guru / Penilai Bertugas</div>
           </div>
           <div>
             <div>Disahkan oleh:</div>
-            <div class="mt-12 font-bold underline">(...................................................)</div>
-            <div class="text-[11px] text-slate-500">Penolong Kanan HEM / Pengetua</div>
+            <div class="mt-10 sm:mt-12 font-bold underline">(...................................................)</div>
+            <div class="text-[10px] sm:text-[11px] text-slate-500">Penolong Kanan HEM / Pengetua</div>
           </div>
         </div>
 
@@ -373,7 +373,7 @@
     const KELAS_ATAS   = ["4S1", "4S2", "4S3", "5S1", "5S2", "5S3"];
     const SEMUA_KELAS  = [...KELAS_RENDAH, ...KELAS_ATAS];
 
-    // Struktur Kriteria Borang Penilaian
+    // Struktur Kriteria Borang Penilaian (Label dipadatkan untuk paparan mobile)
     const KRITERIA = [
       // Kategori 1: Kebersihan (0-3)
       { id: "lantai", nama: "Lantai", max: 3, kat: "kebersihan" },
@@ -383,7 +383,7 @@
 
       // Kategori 2: Kekemasan (0-3)
       { id: "alasMeja", nama: "Alas Meja Murid & Guru", max: 3, kat: "kekemasan" },
-      { id: "susunanMeja", nama: "Susunan Meja & Kerusi", max: 3, kat: "kekemasan" },
+      { id: "susunanMeja", nama: "Susunan Meja Kerusi", max: 3, kat: "kekemasan" },
       { id: "papanKenyataan", nama: "Papan Kenyataan", max: 3, kat: "kekemasan" },
       { id: "langsir", nama: "Langsir", max: 3, kat: "kekemasan" },
       { id: "sub_kekemasan", nama: "JUMLAH KEKEMASAN (/12)", isSub: true, kat: "kekemasan" },
@@ -393,17 +393,17 @@
       { id: "bertugas", nama: "Jadual Bertugas", max: 3, kat: "pak21" },
       { id: "jadualKelas", nama: "Jadual Kelas", max: 3, kat: "pak21" },
       { id: "hariLahir", nama: "Sudut Hari Lahir", max: 3, kat: "pak21" },
-      { id: "hasilKerja", nama: "Sudut Hasil Kerja Murid", max: 3, kat: "pak21" },
+      { id: "hasilKerja", nama: "Sudut Hasil Kerja", max: 3, kat: "pak21" },
       { id: "parking", nama: "Parking Lot", max: 3, kat: "pak21" },
-      { id: "ganjaran", nama: "Sudut Ganjaran & Pencapaian", max: 3, kat: "pak21" },
+      { id: "ganjaran", nama: "Ganjaran / Kejayaan", max: 3, kat: "pak21" },
       { id: "kataHikmah", nama: "Kata-Kata Hikmah", max: 3, kat: "pak21" },
       { id: "sub_pak21", nama: "JUMLAH PAK21 (/24)", isSub: true, kat: "pak21" },
 
       // Kategori 4: Kreativiti (1-5)
-      { id: "kreativiti", nama: "KREATIVITI & KECERIAAN (1-5)", max: 5, min: 1, kat: "kreativiti" },
+      { id: "kreativiti", nama: "KREATIVITI & CERIA (1-5)", max: 5, min: 1, kat: "kreativiti" },
 
       // Jumlah Keseluruhan
-      { id: "jumlah_keseluruhan", nama: "JUMLAH KESELURUHAN (/50)", isTotal: true }
+      { id: "jumlah_keseluruhan", nama: "JUMLAH BESAR (/50)", isTotal: true }
     ];
 
     // Data Pemarkahan Setiap Kelas Dalam Memori
@@ -436,7 +436,7 @@
       kemaskiniSemua();
     });
 
-    // Bina Jadual Matriks dengan Dropdown & Sticky Column
+    // Bina Jadual Matriks dengan Dropdown Padat & Sticky Column
     function binaJadual(tbodyId, senaraiKelas) {
       const tbody = document.getElementById(tbodyId);
       tbody.innerHTML = "";
@@ -456,25 +456,25 @@
           bgKriteria = "bg-white";
         }
 
-        // Lajur Nama Kriteria: Diberi Sticky Left supaya kekal kelihatan semasa skrol ke kanan
+        // Lajur Nama Kriteria (Dikecilkan khas untuk paparan mobile, kekal freeze di kiri)
         const tdNama = document.createElement("td");
-        tdNama.className = `sticky left-0 z-10 ${bgKriteria} py-2 px-3 border-r border-b shadow-[2px_0_4px_-1px_rgba(0,0,0,0.08)] ${item.isTotal ? 'text-emerald-950 font-extrabold text-xs' : (item.isSub ? 'text-slate-800' : 'text-slate-600')}`;
+        tdNama.className = `sticky left-0 z-10 ${bgKriteria} py-1.5 px-2 border-r border-b shadow-[2px_0_4px_-1px_rgba(0,0,0,0.08)] w-[115px] min-w-[115px] max-w-[115px] sm:w-52 sm:min-w-[200px] sm:max-w-none text-[10px] sm:text-xs leading-tight break-words ${item.isTotal ? 'text-emerald-950 font-extrabold' : (item.isSub ? 'text-slate-800' : 'text-slate-600')}`;
         tdNama.innerText = item.nama;
         tr.appendChild(tdNama);
 
-        // Lajur Input Dropdown bagi setiap kelas
+        // Lajur Input Dropdown bagi setiap kelas (Saiz kompak min-w-[54px])
         senaraiKelas.forEach(kelasId => {
           const td = document.createElement("td");
-          td.className = "py-1.5 px-1.5 text-center border-r border-b";
+          td.className = "py-1 px-1 text-center border-r border-b w-[54px] min-w-[54px] sm:w-[70px] sm:min-w-[70px]";
 
           if (item.isTotal) {
-            td.innerHTML = `<span id="cell-${kelasId}-total" class="font-extrabold text-sm text-emerald-800">1</span>`;
+            td.innerHTML = `<span id="cell-${kelasId}-total" class="font-extrabold text-xs sm:text-sm text-emerald-800">1</span>`;
           } else if (item.isSub) {
-            td.innerHTML = `<span id="cell-${kelasId}-${item.id}" class="font-bold text-slate-700">0</span>`;
+            td.innerHTML = `<span id="cell-${kelasId}-${item.id}" class="font-bold text-[11px] sm:text-xs text-slate-700">0</span>`;
           } else {
-            // Dropdown Menu Markah
+            // Dropdown Menu Markah Kompak
             const select = document.createElement("select");
-            select.className = "w-full bg-white border border-slate-300 rounded px-1 py-1 font-semibold text-center text-xs focus:ring-1 focus:ring-emerald-500 outline-none";
+            select.className = "w-full bg-white border border-slate-300 rounded px-0.5 py-0.5 sm:py-1 font-bold text-center text-[11px] sm:text-xs focus:ring-1 focus:ring-emerald-500 outline-none";
             
             const minVal = item.min || 0;
             const maxVal = item.max || 3;
@@ -524,7 +524,7 @@
       const elTot = document.getElementById(`cell-${kelasId}-total`);
       if (elTot) {
         elTot.innerText = d.jumlah;
-        elTot.className = d.jumlah < 15 ? "font-extrabold text-sm text-rose-600" : "font-extrabold text-sm text-emerald-800";
+        elTot.className = d.jumlah < 15 ? "font-extrabold text-xs sm:text-sm text-rose-600" : "font-extrabold text-xs sm:text-sm text-emerald-800";
       }
     }
 
@@ -533,12 +533,12 @@
       ['penilaian', 'dashboard', 'keputusan'].forEach(t => {
         document.getElementById(`page-${t}`).classList.add('hidden');
         const navBtn = document.getElementById(`nav-${t}`);
-        navBtn.className = "px-4 py-2 rounded-lg text-emerald-100 hover:text-white transition flex items-center gap-2";
+        navBtn.className = "px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-emerald-100 hover:text-white transition flex items-center gap-1.5 sm:gap-2";
       });
 
       document.getElementById(`page-${tab}`).classList.remove('hidden');
       const activeNav = document.getElementById(`nav-${tab}`);
-      activeNav.className = "px-4 py-2 rounded-lg bg-white text-emerald-800 shadow transition flex items-center gap-2";
+      activeNav.className = "px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-white text-emerald-800 shadow transition flex items-center gap-1.5 sm:gap-2";
 
       if (tab === 'dashboard') {
         janaGraf();
@@ -556,13 +556,13 @@
       if (kat === 'rendah') {
         mukaRendah.classList.remove('hidden');
         mukaAtas.classList.add('hidden');
-        btnRendah.className = "px-4 py-1.5 rounded-md font-bold text-xs bg-emerald-600 text-white shadow transition";
-        btnAtas.className = "px-4 py-1.5 rounded-md font-bold text-xs text-slate-600 hover:text-emerald-700 transition";
+        btnRendah.className = "flex-1 sm:flex-none px-3 py-1.5 rounded-md font-bold text-xs bg-emerald-600 text-white shadow transition text-center";
+        btnAtas.className = "flex-1 sm:flex-none px-3 py-1.5 rounded-md font-bold text-xs text-slate-600 hover:text-emerald-700 transition text-center";
       } else {
         mukaRendah.classList.add('hidden');
         mukaAtas.classList.remove('hidden');
-        btnAtas.className = "px-4 py-1.5 rounded-md font-bold text-xs bg-emerald-600 text-white shadow transition";
-        btnRendah.className = "px-4 py-1.5 rounded-md font-bold text-xs text-slate-600 hover:text-emerald-700 transition";
+        btnAtas.className = "flex-1 sm:flex-none px-3 py-1.5 rounded-md font-bold text-xs bg-emerald-600 text-white shadow transition text-center";
+        btnRendah.className = "flex-1 sm:flex-none px-3 py-1.5 rounded-md font-bold text-xs text-slate-600 hover:text-emerald-700 transition text-center";
       }
     }
 
@@ -605,13 +605,13 @@
         const tr = document.createElement("tr");
         tr.className = idx === 0 ? "bg-amber-50/60 font-semibold" : "";
         tr.innerHTML = `
-          <td class="py-1.5 px-2 text-center font-bold">${idx + 1}</td>
-          <td class="py-1.5 px-2 font-bold text-slate-800">${item.kelas}</td>
-          <td class="py-1.5 px-2 text-center text-slate-600">${item.kebersihan}</td>
-          <td class="py-1.5 px-2 text-center text-slate-600">${item.kekemasan}</td>
-          <td class="py-1.5 px-2 text-center text-slate-600">${item.pak21}</td>
-          <td class="py-1.5 px-2 text-center text-slate-600">${item.kreativiti}</td>
-          <td class="py-1.5 px-2 text-right font-extrabold ${item.jumlah < 15 ? 'text-rose-600' : 'text-emerald-700'}">${item.jumlah}</td>
+          <td class="py-1.5 px-1.5 text-center font-bold">${idx + 1}</td>
+          <td class="py-1.5 px-1.5 font-bold text-slate-800">${item.kelas}</td>
+          <td class="py-1.5 px-1 text-center text-slate-600">${item.kebersihan}</td>
+          <td class="py-1.5 px-1 text-center text-slate-600">${item.kekemasan}</td>
+          <td class="py-1.5 px-1 text-center text-slate-600">${item.pak21}</td>
+          <td class="py-1.5 px-1 text-center text-slate-600">${item.kreativiti}</td>
+          <td class="py-1.5 px-1.5 text-right font-extrabold ${item.jumlah < 15 ? 'text-rose-600' : 'text-emerald-700'}">${item.jumlah}</td>
         `;
         tbody.appendChild(tr);
       });
@@ -620,20 +620,20 @@
     function binaPodium(podiumId, senarai) {
       const el = document.getElementById(podiumId);
       el.innerHTML = `
-        <div class="bg-white p-2.5 rounded-lg border shadow-sm">
-          <div class="text-[10px] font-bold text-slate-400 uppercase">Kedua</div>
-          <div class="text-sm font-extrabold text-slate-800">${senarai[1] ? senarai[1].kelas : '-'}</div>
-          <div class="text-xs font-semibold text-slate-500">${senarai[1] ? senarai[1].jumlah + ' m' : '0'}</div>
+        <div class="bg-white p-2 rounded-lg border shadow-sm">
+          <div class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase">Kedua</div>
+          <div class="text-xs sm:text-sm font-extrabold text-slate-800">${senarai[1] ? senarai[1].kelas : '-'}</div>
+          <div class="text-[10px] sm:text-xs font-semibold text-slate-500">${senarai[1] ? senarai[1].jumlah + ' m' : '0'}</div>
         </div>
-        <div class="bg-amber-100/80 p-2.5 rounded-lg border border-amber-300 shadow-sm">
-          <div class="text-[10px] font-bold text-amber-800 uppercase"><i class="fa-solid fa-crown text-amber-600"></i> Pertama</div>
-          <div class="text-base font-black text-amber-950">${senarai[0] ? senarai[0].kelas : '-'}</div>
-          <div class="text-xs font-bold text-amber-800">${senarai[0] ? senarai[0].jumlah + ' m' : '0'}</div>
+        <div class="bg-amber-100/80 p-2 rounded-lg border border-amber-300 shadow-sm">
+          <div class="text-[9px] sm:text-[10px] font-bold text-amber-800 uppercase"><i class="fa-solid fa-crown text-amber-600"></i> Pertama</div>
+          <div class="text-sm sm:text-base font-black text-amber-950">${senarai[0] ? senarai[0].kelas : '-'}</div>
+          <div class="text-[10px] sm:text-xs font-bold text-amber-800">${senarai[0] ? senarai[0].jumlah + ' m' : '0'}</div>
         </div>
-        <div class="bg-white p-2.5 rounded-lg border shadow-sm">
-          <div class="text-[10px] font-bold text-slate-400 uppercase">Ketiga</div>
-          <div class="text-sm font-extrabold text-slate-800">${senarai[2] ? senarai[2].kelas : '-'}</div>
-          <div class="text-xs font-semibold text-slate-500">${senarai[2] ? senarai[2].jumlah + ' m' : '0'}</div>
+        <div class="bg-white p-2 rounded-lg border shadow-sm">
+          <div class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase">Ketiga</div>
+          <div class="text-xs sm:text-sm font-extrabold text-slate-800">${senarai[2] ? senarai[2].kelas : '-'}</div>
+          <div class="text-[10px] sm:text-xs font-semibold text-slate-500">${senarai[2] ? senarai[2].jumlah + ' m' : '0'}</div>
         </div>
       `;
     }
@@ -657,7 +657,7 @@
             label: 'Jumlah Markah (/50)',
             data: data,
             backgroundColor: colors,
-            borderRadius: 6
+            borderRadius: 5
           }]
         },
         options: {
