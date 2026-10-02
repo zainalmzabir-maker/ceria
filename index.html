@@ -4,534 +4,701 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sistem Penilaian Kebersihan & Keceriaan Kelas</title>
-  <!-- Tailwind CSS & Font Awesome CDN -->
+  
+  <!-- Favicon Logo -->
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+
+  <!-- Tailwind CSS, Font Awesome, & Chart.js CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     @media print {
       .no-print { display: none !important; }
       .print-only { display: block !important; }
+      body { background-color: #ffffff; }
+    }
+    .custom-scroll::-webkit-scrollbar {
+      height: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
     }
   </style>
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans min-h-screen pb-12">
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col">
 
-  <!-- Header Utama -->
-  <header class="bg-emerald-700 text-white py-6 px-4 shadow-md">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-      <div>
-        <h1 class="text-2xl md:text-3xl font-bold tracking-tight">SISTEM PENILAIAN KEBERSIHAN & KECERIAAN KELAS</h1>
-        <p class="text-emerald-100 text-sm mt-1">Pengisian pantas, pengiraan markah automatik & ranking secara langsung</p>
+  <!-- Header Navigasi Atas -->
+  <header class="bg-emerald-700 text-white shadow-md sticky top-0 z-50 no-print">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-3">
+      
+      <!-- Logo dan Tajuk Sistem -->
+      <div class="flex items-center gap-3">
+        <img src="logo.png" alt="Logo Sekolah" class="w-12 h-12 object-contain bg-white/10 rounded-lg p-1 shadow-sm" onerror="this.onerror=null; this.src='https://placehold.co/48x48?text=Logo';">
+        <div>
+          <h1 class="font-bold text-lg leading-tight">SISTEM PENILAIAN KEBERSIHAN & KECERIAAN</h1>
+          <p class="text-xs text-emerald-200">Borang Digital Mingguan Sekolah</p>
+        </div>
       </div>
-      <div class="flex gap-2 no-print">
-        <button onclick="window.print()" class="bg-emerald-800 hover:bg-emerald-900 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition shadow">
-          <i class="fa-solid fa-print"></i> Cetak Keputusan
+
+      <!-- 3 Tab Menu Utama -->
+      <nav class="flex bg-emerald-800/80 p-1 rounded-xl shadow-inner text-sm font-semibold">
+        <button id="nav-penilaian" onclick="bukaTab('penilaian')" class="px-4 py-2 rounded-lg bg-white text-emerald-800 shadow transition flex items-center gap-2">
+          <i class="fa-solid fa-pen-to-square"></i> 1. Penilaian
         </button>
-      </div>
+        <button id="nav-dashboard" onclick="bukaTab('dashboard')" class="px-4 py-2 rounded-lg text-emerald-100 hover:text-white transition flex items-center gap-2">
+          <i class="fa-solid fa-chart-pie"></i> 2. Dashboard
+        </button>
+        <button id="nav-keputusan" onclick="bukaTab('keputusan')" class="px-4 py-2 rounded-lg text-emerald-100 hover:text-white transition flex items-center gap-2">
+          <i class="fa-solid fa-trophy"></i> 3. Keputusan
+        </button>
+      </nav>
     </div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-4 mt-6 space-y-6">
-
-    <!-- Maklumat Asas Penilaian -->
-    <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-200">
-      <h2 class="text-lg font-semibold text-slate-800 border-b pb-2 mb-4 flex items-center gap-2">
-        <i class="fa-solid fa-clipboard-list text-emerald-600"></i> Maklumat Penilaian
-      </h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Minggu</label>
-          <input type="text" id="minggu" placeholder="Cth: 14" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Tarikh</label>
-          <input type="date" id="tarikh" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Masa</label>
-          <input type="time" id="masa" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Disediakan Oleh</label>
-          <input type="text" id="penilai" placeholder="Nama Guru / Pengawas" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
-        </div>
+  <!-- Maklumat Sesi Penilaian -->
+  <section class="max-w-7xl mx-auto px-4 mt-4 w-full no-print">
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+      <div>
+        <label class="font-bold text-slate-600 uppercase">Minggu:</label>
+        <input type="text" id="info-minggu" placeholder="Cth: 12" class="w-full mt-1 border rounded px-2.5 py-1.5 font-medium outline-none focus:ring-1 focus:ring-emerald-500">
+      </div>
+      <div>
+        <label class="font-bold text-slate-600 uppercase">Tarikh:</label>
+        <input type="date" id="info-tarikh" class="w-full mt-1 border rounded px-2.5 py-1.5 font-medium outline-none focus:ring-1 focus:ring-emerald-500">
+      </div>
+      <div>
+        <label class="font-bold text-slate-600 uppercase">Masa:</label>
+        <input type="time" id="info-masa" class="w-full mt-1 border rounded px-2.5 py-1.5 font-medium outline-none focus:ring-1 focus:ring-emerald-500">
+      </div>
+      <div>
+        <label class="font-bold text-slate-600 uppercase">Disediakan Oleh:</label>
+        <input type="text" id="info-penilai" placeholder="Nama Guru / Penilai" class="w-full mt-1 border rounded px-2.5 py-1.5 font-medium outline-none focus:ring-1 focus:ring-emerald-500">
       </div>
     </div>
+  </section>
 
-    <!-- Papan Pemuka Ranking Semasa -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <!-- KANDUNGAN HALAMAN -->
+  <main class="max-w-7xl mx-auto px-4 py-4 w-full flex-1">
+
+    <!-- ================= PAGE 1: PENILAIAN ================= -->
+    <div id="page-penilaian" class="space-y-4">
       
-      <!-- Ranking Menengah Rendah -->
-      <div class="bg-white rounded-xl shadow-sm p-6 border-t-4 border-t-blue-500 border border-slate-200">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="font-bold text-slate-800 flex items-center gap-2 text-lg">
-            <i class="fa-solid fa-medal text-blue-500"></i> Ranking Menengah Rendah
-          </h3>
-          <span class="text-xs bg-blue-100 text-blue-800 font-semibold px-2.5 py-0.5 rounded-full">Tingkatan 1 - 3</span>
-        </div>
-        <div class="space-y-2">
-          <div id="podium-rendah" class="grid grid-cols-3 gap-2 mb-4 text-center"></div>
-          <table class="w-full text-sm">
-            <thead class="bg-slate-50 text-slate-500 text-xs">
-              <tr>
-                <th class="py-2 px-3 text-left">Kedudukan</th>
-                <th class="py-2 px-3 text-left">Kelas</th>
-                <th class="py-2 px-3 text-right">Jumlah Markah (/50)</th>
-              </tr>
-            </thead>
-            <tbody id="list-ranking-rendah" class="divide-y divide-slate-100"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Ranking Menengah Atas -->
-      <div class="bg-white rounded-xl shadow-sm p-6 border-t-4 border-t-amber-500 border border-slate-200">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="font-bold text-slate-800 flex items-center gap-2 text-lg">
-            <i class="fa-solid fa-trophy text-amber-500"></i> Ranking Menengah Atas
-          </h3>
-          <span class="text-xs bg-amber-100 text-amber-800 font-semibold px-2.5 py-0.5 rounded-full">Tingkatan 4 - 5</span>
-        </div>
-        <div class="space-y-2">
-          <div id="podium-atas" class="grid grid-cols-3 gap-2 mb-4 text-center"></div>
-          <table class="w-full text-sm">
-            <thead class="bg-slate-50 text-slate-500 text-xs">
-              <tr>
-                <th class="py-2 px-3 text-left">Kedudukan</th>
-                <th class="py-2 px-3 text-left">Kelas</th>
-                <th class="py-2 px-3 text-right">Jumlah Markah (/50)</th>
-              </tr>
-            </thead>
-            <tbody id="list-ranking-atas" class="divide-y divide-slate-100"></tbody>
-          </table>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Peringatan Khas: Kelas Bawah 15 Markah -->
-    <div id="alert-kurang-15" class="bg-rose-50 border-l-4 border-rose-500 p-4 rounded-lg hidden">
-      <div class="flex items-start">
-        <div class="flex-shrink-0">
-          <i class="fa-solid fa-triangle-exclamation text-rose-500 text-lg mt-0.5"></i>
-        </div>
-        <div class="ml-3">
-          <h4 class="text-sm font-bold text-rose-800">Kelas Dengan Markah Kurang 15 Markah:</h4>
-          <p id="senarai-kurang-15" class="text-sm text-rose-700 mt-1 font-medium"></p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Borang Input Markah Kelas -->
-    <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-200">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4 mb-6">
-        <div>
-          <h3 class="text-lg font-bold text-slate-800">Borang Pemarkahan Per Kelas</h3>
-          <p class="text-xs text-slate-500">Pilih kelas di bawah dan isi markah mengikut skala borang.</p>
-        </div>
-        
-        <!-- Pemilih Kelas -->
+      <!-- Sub-Pilihan Kategori: Menengah Rendah vs Menengah Atas -->
+      <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div class="flex items-center gap-2">
-          <label class="text-sm font-semibold text-slate-700">Pilih Kelas:</label>
-          <select id="select-kelas" onchange="tukarKelas()" class="border-2 border-emerald-600 rounded-lg px-3 py-1.5 font-bold text-emerald-800 text-sm bg-emerald-50 outline-none">
-            <optgroup label="Menengah Rendah">
-              <option value="1S1">1S1</option>
-              <option value="1S2">1S2</option>
-              <option value="2S1">2S1</option>
-              <option value="2S2">2S2</option>
-              <option value="3S1">3S1</option>
-              <option value="3S2">3S2</option>
-              <option value="3S3">3S3</option>
-            </optgroup>
-            <optgroup label="Menengah Atas">
-              <option value="4S1">4S1</option>
-              <option value="4S2">4S2</option>
-              <option value="4S3">4S3</option>
-              <option value="5S1">5S1</option>
-              <option value="5S2">5S2</option>
-              <option value="5S3">5S3</option>
-            </optgroup>
-          </select>
+          <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Kategori Penilaian:</span>
+          <div class="inline-flex bg-slate-100 p-1 rounded-lg">
+            <button id="sub-rendah-btn" onclick="pilihKategoriPenilaian('rendah')" class="px-4 py-1.5 rounded-md font-bold text-xs bg-emerald-600 text-white shadow transition">
+              <i class="fa-solid fa-users mr-1"></i> Menengah Rendah (1S1 - 3S3)
+            </button>
+            <button id="sub-atas-btn" onclick="pilihKategoriPenilaian('atas')" class="px-4 py-1.5 rounded-md font-bold text-xs text-slate-600 hover:text-emerald-700 transition">
+              <i class="fa-solid fa-user-graduate mr-1"></i> Menengah Atas (4S1 - 5S3)
+            </button>
+          </div>
+        </div>
+        <div class="text-xs text-slate-500 italic">
+          *Pilih markah secara dropdown bagi setiap kelas. Markah dikira secara langsung.
         </div>
       </div>
 
-      <div class="space-y-6">
-
-        <!-- 1. Kebersihan (/9) -->
-        <div class="border rounded-xl p-4 bg-slate-50">
-          <div class="flex justify-between items-center mb-3">
-            <h4 class="font-bold text-emerald-800 text-sm flex items-center gap-2">
-              <i class="fa-solid fa-broom text-emerald-600"></i> 1. KEBERSIHAN (Skala: 0=Kotor, 1=Memuaskan, 2=Bersih, 3=Sangat Bersih)
-            </h4>
-            <span id="sub-kebersihan" class="text-xs font-bold bg-emerald-100 text-emerald-800 px-2 py-1 rounded">0 / 9</span>
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div>
-              <label class="text-xs text-slate-600 font-medium">Lantai (0-3)</label>
-              <input type="number" min="0" max="3" id="input-lantai" oninput="kiraMarkah()" class="w-full border rounded p-2 text-center text-sm font-semibold mt-1">
-            </div>
-            <div>
-              <label class="text-xs text-slate-600 font-medium">Tingkap (0-3)</label>
-              <input type="number" min="0" max="3" id="input-tingkap" oninput="kiraMarkah()" class="w-full border rounded p-2 text-center text-sm font-semibold mt-1">
-            </div>
-            <div>
-              <label class="text-xs text-slate-600 font-medium">Papan Putih (0-3)</label>
-              <input type="number" min="0" max="3" id="input-papan-putih" oninput="kiraMarkah()" class="w-full border rounded p-2 text-center text-sm font-semibold mt-1">
-            </div>
-          </div>
+      <!-- Jadual Satu Muka: Menengah Rendah -->
+      <div id="muka-rendah" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="bg-blue-50 px-4 py-2.5 border-b border-blue-100 flex items-center justify-between">
+          <span class="font-bold text-blue-900 text-sm flex items-center gap-2">
+            <i class="fa-solid fa-layer-group text-blue-600"></i> Borang Penilaian: Menengah Rendah (1 Muka Surat)
+          </span>
+          <span class="text-xs bg-blue-200 text-blue-800 font-bold px-2 py-0.5 rounded">7 Kelas</span>
         </div>
-
-        <!-- 2. Kekemasan (/12) -->
-        <div class="border rounded-xl p-4 bg-slate-50">
-          <div class="flex justify-between items-center mb-3">
-            <h4 class="font-bold text-blue-800 text-sm flex items-center gap-2">
-              <i class="fa-solid fa-table text-blue-600"></i> 2. KEKEMASAN (Skala: 0=Tiada/Tak teratur, 1=Tidak Memuaskan, 2=Memuaskan, 3=Kemas Dan Ceria)
-            </h4>
-            <span id="sub-kekemasan" class="text-xs font-bold bg-blue-100 text-blue-800 px-2 py-1 rounded">0 / 12</span>
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            <div>
-              <label class="text-xs text-slate-600 font-medium">Alas Meja Murid & Guru (0-3)</label>
-              <input type="number" min="0" max="3" id="input-alas-meja" oninput="kiraMarkah()" class="w-full border rounded p-2 text-center text-sm font-semibold mt-1">
-            </div>
-            <div>
-              <label class="text-xs text-slate-600 font-medium">Susunan Meja & Kerusi (0-3)</label>
-              <input type="number" min="0" max="3" id="input-susunan-meja" oninput="kiraMarkah()" class="w-full border rounded p-2 text-center text-sm font-semibold mt-1">
-            </div>
-            <div>
-              <label class="text-xs text-slate-600 font-medium">Papan Kenyataan (0-3)</label>
-              <input type="number" min="0" max="3" id="input-papan-kenyataan" oninput="kiraMarkah()" class="w-full border rounded p-2 text-center text-sm font-semibold mt-1">
-            </div>
-            <div>
-              <label class="text-xs text-slate-600 font-medium">Langsir (0-3)</label>
-              <input type="number" min="0" max="3" id="input-langsir" oninput="kiraMarkah()" class="w-full border rounded p-2 text-center text-sm font-semibold mt-1">
-            </div>
-          </div>
+        <div class="overflow-x-auto custom-scroll">
+          <table class="w-full text-xs text-left border-collapse min-w-[700px]">
+            <thead class="bg-slate-100 text-slate-700 font-bold uppercase text-[11px] border-b">
+              <tr>
+                <th class="py-2.5 px-3 w-64 border-r">Kriteria Penilaian</th>
+                <th class="py-2.5 px-2 text-center border-r">1S1</th>
+                <th class="py-2.5 px-2 text-center border-r">1S2</th>
+                <th class="py-2.5 px-2 text-center border-r">2S1</th>
+                <th class="py-2.5 px-2 text-center border-r">2S2</th>
+                <th class="py-2.5 px-2 text-center border-r">3S1</th>
+                <th class="py-2.5 px-2 text-center border-r">3S2</th>
+                <th class="py-2.5 px-2 text-center">3S3</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-rendah" class="divide-y divide-slate-200">
+              <!-- Dijana secara dinamik oleh JavaScript -->
+            </tbody>
+          </table>
         </div>
+      </div>
 
-        <!-- 3. PAK21 (/24) -->
-        <div class="border rounded-xl p-4 bg-slate-50">
-          <div class="flex justify-between items-center mb-3">
-            <h4 class="font-bold text-purple-800 text-sm flex items-center gap-2">
-              <i class="fa-solid fa-shapes text-purple-600"></i> 3. PAK21 (Skala: 0=Tiada, 1=Ada tanpa maklumat, 2=Bermaklumat, 3=Lengkap & Boleh dicontohi)
-            </h4>
-            <span id="sub-pak21" class="text-xs font-bold bg-purple-100 text-purple-800 px-2 py-1 rounded">0 / 24</span>
-          </div>
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div>
-              <label class="text-xs text-slate-600 font-medium">Carta Organisasi (0-3)</label>
-              <input type="number" min="0" max="3" id="input-carta" oninput="kiraMarkah()" class="w-full border rounded p-2 text-center text-sm font-semibold mt-1">
-            </div>
-            <div>
-              <label class="text-xs text-slate-600 font-medium">Jadual Bertugas (0-3)</label>
-              <input type="number" min="0" max="3" id="input-bertugas" oninput="kiraMarkah()" class="w-full border rounded p-2 text-center text-sm font-semibold mt-1">
-            </div>
-            <div>
-              <label class="text-xs text-slate-600 font-medium">Jadual Kelas (0-3)</label>
-              <input type="number" min="0" max="3" id="input-jadual-kelas" oninput="kiraMarkah()" class="w-full border rounded p-2 text-center text-sm font-semibold mt-1">
-            </div>
-            <div>
-              <label class="text-xs text-slate-600 font-medium">Sudut Hari Lahir (0-3)</label>
-              <input type="number" min="0" max="3" id="input-hari-lahir" oninput="kiraMarkah()" class="w-full border rounded p-2 text-center text-sm font-semibold mt-1">
-            </div>
-            <div>
-              <label class="text-xs text-slate-600 font-medium">Hasil Kerja Murid (0-3)</label>
-              <input type="number" min="0" max="3" id="input-hasil-kerja" oninput="kiraMarkah()" class="w-full border rounded p-2 text-center text-sm font-semibold mt-1">
-            </div>
-            <div>
-              <label class="text-xs text-slate-600 font-medium">Parking Lot (0-3)</label>
-              <input type="number" min="0" max="3" id="input-parking" oninput="kiraMarkah()" class="w-full border rounded p-2 text-center text-sm font-semibold mt-1">
-            </div>
-            <div>
-              <label class="text-xs text-slate-600 font-medium">Ganjaran & Pencapaian (0-3)</label>
-              <input type="number" min="0" max="3" id="input-ganjaran" oninput="kiraMarkah()" class="w-full border rounded p-2 text-center text-sm font-semibold mt-1">
-            </div>
-            <div>
-              <label class="text-xs text-slate-600 font-medium">Kata-Kata Hikmah (0-3)</label>
-              <input type="number" min="0" max="3" id="input-kata-hikmah" oninput="kiraMarkah()" class="w-full border rounded p-2 text-center text-sm font-semibold mt-1">
-            </div>
-          </div>
+      <!-- Jadual Satu Muka: Menengah Atas -->
+      <div id="muka-atas" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hidden">
+        <div class="bg-amber-50 px-4 py-2.5 border-b border-amber-100 flex items-center justify-between">
+          <span class="font-bold text-amber-900 text-sm flex items-center gap-2">
+            <i class="fa-solid fa-layer-group text-amber-600"></i> Borang Penilaian: Menengah Atas (1 Muka Surat)
+          </span>
+          <span class="text-xs bg-amber-200 text-amber-800 font-bold px-2 py-0.5 rounded">6 Kelas</span>
         </div>
+        <div class="overflow-x-auto custom-scroll">
+          <table class="w-full text-xs text-left border-collapse min-w-[650px]">
+            <thead class="bg-slate-100 text-slate-700 font-bold uppercase text-[11px] border-b">
+              <tr>
+                <th class="py-2.5 px-3 w-64 border-r">Kriteria Penilaian</th>
+                <th class="py-2.5 px-2 text-center border-r">4S1</th>
+                <th class="py-2.5 px-2 text-center border-r">4S2</th>
+                <th class="py-2.5 px-2 text-center border-r">4S3</th>
+                <th class="py-2.5 px-2 text-center border-r">5S1</th>
+                <th class="py-2.5 px-2 text-center border-r">5S2</th>
+                <th class="py-2.5 px-2 text-center">5S3</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-atas" class="divide-y divide-slate-200">
+              <!-- Dijana secara dinamik oleh JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-        <!-- 4. Kreativiti & Keceriaan (/5) -->
-        <div class="border rounded-xl p-4 bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    </div>
+
+    <!-- ================= PAGE 2: DASHBOARD ================= -->
+    <div id="page-dashboard" class="space-y-6 hidden">
+      
+      <!-- Kad Ringkasan Eksekutif -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3">
+          <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xl">
+            <i class="fa-solid fa-trophy"></i>
+          </div>
           <div>
-            <h4 class="font-bold text-amber-800 text-sm flex items-center gap-2">
-              <i class="fa-solid fa-wand-magic-sparkles text-amber-600"></i> 4. KREATIVITI DAN KECERIAAN (Skala: 1 - 5)
-            </h4>
-            <p class="text-xs text-slate-500 mt-0.5">Penilaian daya tarikan visual, keunikan sudut bacaan dan suasana kelas.</p>
-          </div>
-          <div class="flex items-center gap-3">
-            <input type="number" min="1" max="5" id="input-kreativiti" oninput="kiraMarkah()" class="w-24 border rounded p-2 text-center font-bold text-amber-800 text-base">
-            <span class="text-xs font-bold text-slate-500">/ 5 Markah</span>
+            <div class="text-[11px] text-slate-500 font-bold uppercase">Teratas (Men. Rendah)</div>
+            <div class="text-lg font-extrabold text-blue-700" id="dash-top-rendah">-</div>
           </div>
         </div>
 
-        <!-- Jumlah Markah & Pengesahan -->
-        <div class="bg-emerald-50 border-2 border-emerald-300 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div>
-            <span class="text-xs uppercase font-bold tracking-wider text-emerald-800">Jumlah Markah Keseluruhan Kelas <span id="label-kelas-aktif" class="underline">1S1</span></span>
-            <div class="text-3xl font-extrabold text-emerald-700" id="total-kelas-aktif">0 <span class="text-lg font-normal text-slate-500">/ 50</span></div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3">
+          <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center text-xl">
+            <i class="fa-solid fa-crown"></i>
           </div>
-          <button onclick="simpanKelasKeMemori()" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6 py-2.5 rounded-lg shadow transition flex items-center justify-center gap-2">
-            <i class="fa-solid fa-check"></i> Sahkan & Kemas Kini Ranking
+          <div>
+            <div class="text-[11px] text-slate-500 font-bold uppercase">Teratas (Men. Atas)</div>
+            <div class="text-lg font-extrabold text-amber-700" id="dash-top-atas">-</div>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3">
+          <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center text-xl">
+            <i class="fa-solid fa-calculator"></i>
+          </div>
+          <div>
+            <div class="text-[11px] text-slate-500 font-bold uppercase">Purata Markah Sekolah</div>
+            <div class="text-lg font-extrabold text-emerald-700" id="dash-purata">0 / 50</div>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3">
+          <div class="w-12 h-12 bg-rose-100 text-rose-600 rounded-lg flex items-center justify-center text-xl">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <div>
+            <div class="text-[11px] text-slate-500 font-bold uppercase">Markah &lt; 15 Markah</div>
+            <div class="text-lg font-extrabold text-rose-700" id="dash-count-bawah15">0 Kelas</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Graf Carta Bar Perbandingan Markah Keseluruhan -->
+      <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+        <h3 class="font-bold text-slate-800 text-sm mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-chart-column text-emerald-600"></i> Perbandingan Markah Keseluruhan Semua Kelas (/50)
+        </h3>
+        <div class="w-full h-80">
+          <canvas id="chartMarkah"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================= PAGE 3: KEPUTUSAN ================= -->
+    <div id="page-keputusan" class="space-y-6 hidden">
+      
+      <!-- Bar Tindakan: Simpan & Cetak -->
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3 no-print">
+        <div>
+          <h3 class="font-bold text-slate-800 text-base">Laporan Rasmi Keputusan Mingguan</h3>
+          <p class="text-xs text-slate-500">Boleh terus dicetak atau dihantar ke Google Sheets (Database).</p>
+        </div>
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <button onclick="window.print()" class="flex-1 sm:flex-none bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-2 shadow">
+            <i class="fa-solid fa-print"></i> Cetak / Simpan PDF
+          </button>
+          <button onclick="hantarKeGoogleSheet()" id="btn-hantar-sheets" class="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-2 shadow transition">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Google Sheet
           </button>
         </div>
-
       </div>
-    </div>
 
-    <!-- Bahagian Simpan ke Google Sheets -->
-    <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-200 no-print">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
-          <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
-            <i class="fa-solid fa-cloud-arrow-up text-emerald-600"></i> Simpan ke Google Sheets
-          </h3>
-          <p class="text-xs text-slate-500 mt-0.5">
-            Database Terpaut: <span class="font-mono bg-slate-100 px-1.5 py-0.5 rounded text-slate-700">DATABASE KECERIAAN KELAS</span>
-          </p>
+      <div id="status-hantar" class="text-center font-bold text-xs no-print"></div>
+
+      <!-- Kertas Laporan Rasmi (Sesuai Cetak) -->
+      <div class="bg-white p-6 sm:p-8 rounded-xl border border-slate-300 shadow-sm space-y-6">
+        
+        <!-- Kepala Surat Rasmi Bersama Logo -->
+        <div class="text-center border-b pb-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <img src="logo.png" alt="Logo Sekolah" class="w-16 h-16 object-contain" onerror="this.onerror=null; this.src='https://placehold.co/64x64?text=Logo';">
+          <div>
+            <h2 class="text-xl font-extrabold tracking-wide text-slate-800">KEPUTUSAN PERTANDINGAN KEBERSIHAN & KECERIAAN KELAS</h2>
+            <div class="text-xs text-slate-600 mt-2 flex flex-wrap justify-center gap-6 font-semibold">
+              <span>MINGGU: <span id="rep-minggu" class="font-bold text-slate-900">-</span></span>
+              <span>TARIKH: <span id="rep-tarikh" class="font-bold text-slate-900">-</span></span>
+              <span>MASA: <span id="rep-masa" class="font-bold text-slate-900">-</span></span>
+            </div>
+          </div>
         </div>
-        <button onclick="hantarKeGoogleSheet()" id="btn-hantar" class="w-full sm:w-auto bg-emerald-700 hover:bg-emerald-800 text-white px-6 py-2.5 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition shadow">
-          <i class="fa-solid fa-paper-plane"></i> Hantar Semua Keputusan
-        </button>
+
+        <!-- Kad Podium / Juara 1, 2, 3 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          <!-- Podium Rendah -->
+          <div class="border rounded-xl p-4 bg-blue-50/50">
+            <h4 class="font-bold text-blue-900 text-xs uppercase mb-3 flex items-center gap-1.5">
+              <i class="fa-solid fa-medal text-blue-600"></i> Pemenang Menengah Rendah
+            </h4>
+            <div id="podium-rendah" class="grid grid-cols-3 gap-2 text-center text-xs"></div>
+          </div>
+
+          <!-- Podium Atas -->
+          <div class="border rounded-xl p-4 bg-amber-50/50">
+            <h4 class="font-bold text-amber-900 text-xs uppercase mb-3 flex items-center gap-1.5">
+              <i class="fa-solid fa-trophy text-amber-600"></i> Pemenang Menengah Atas
+            </h4>
+            <div id="podium-atas" class="grid grid-cols-3 gap-2 text-center text-xs"></div>
+          </div>
+
+        </div>
+
+        <!-- Jadual Ranking Rasmi -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- Jadual Kedudukan Rendah -->
+          <div>
+            <h4 class="font-bold text-slate-800 text-xs mb-2 border-b pb-1">Kedudukan Menengah Rendah (1S1 - 3S3)</h4>
+            <table class="w-full text-xs">
+              <thead class="bg-slate-100 text-slate-600">
+                <tr>
+                  <th class="py-2 px-2 text-center">Ked.</th>
+                  <th class="py-2 px-2 text-left">Kelas</th>
+                  <th class="py-2 px-2 text-center">Keb. (/9)</th>
+                  <th class="py-2 px-2 text-center">Kek. (/12)</th>
+                  <th class="py-2 px-2 text-center">PAK21 (/24)</th>
+                  <th class="py-2 px-2 text-center">Kre. (/5)</th>
+                  <th class="py-2 px-2 text-right">Jumlah (/50)</th>
+                </tr>
+              </thead>
+              <tbody id="table-rank-rendah" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+
+          <!-- Jadual Kedudukan Atas -->
+          <div>
+            <h4 class="font-bold text-slate-800 text-xs mb-2 border-b pb-1">Kedudukan Menengah Atas (4S1 - 5S3)</h4>
+            <table class="w-full text-xs">
+              <thead class="bg-slate-100 text-slate-600">
+                <tr>
+                  <th class="py-2 px-2 text-center">Ked.</th>
+                  <th class="py-2 px-2 text-left">Kelas</th>
+                  <th class="py-2 px-2 text-center">Keb. (/9)</th>
+                  <th class="py-2 px-2 text-center">Kek. (/12)</th>
+                  <th class="py-2 px-2 text-center">PAK21 (/24)</th>
+                  <th class="py-2 px-2 text-center">Kre. (/5)</th>
+                  <th class="py-2 px-2 text-right">Jumlah (/50)</th>
+                </tr>
+              </thead>
+              <tbody id="table-rank-atas" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+
+        </div>
+
+        <!-- Ruang Amaran: Kelas Kurang 15 Markah -->
+        <div class="border border-rose-200 bg-rose-50/70 p-3 rounded-lg text-xs">
+          <span class="font-bold text-rose-800 uppercase">Kelas Dengan Markah Kurang 15 Markah:</span>
+          <span id="rep-bawah15" class="ml-2 font-semibold text-rose-700">Tiada</span>
+        </div>
+
+        <!-- Ruangan Tandatangan -->
+        <div class="pt-6 border-t flex justify-between text-xs text-slate-700">
+          <div>
+            <div>Disediakan oleh:</div>
+            <div class="mt-12 font-bold underline" id="rep-penilai-sign">(...................................................)</div>
+            <div class="text-[11px] text-slate-500">Guru / Penilai Bertugas</div>
+          </div>
+          <div>
+            <div>Disahkan oleh:</div>
+            <div class="mt-12 font-bold underline">(...................................................)</div>
+            <div class="text-[11px] text-slate-500">Penolong Kanan HEM / Pengetua</div>
+          </div>
+        </div>
+
       </div>
-      <p id="status-hantar" class="text-xs mt-3 font-medium"></p>
+
     </div>
 
   </main>
 
   <script>
-    // URL Google Apps Script yang disediakan
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzCvpkJwVojVGx1OExI7AelT72Zy-PFdRkeqE5a0Rd_DLZBr95RPVzSp5Xb7HkZDAtO_w/exec";
+    // Konfigurasi Database Terpaut
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzCvpkJwVojVGx1OExI7AelT72Zy-PFdRkeqE5a0Rd_DLZBr95RPVzSp5Xb7HkZDAtO_w/exec";
 
-    // Senarai kelas
-    const senaraiKelas = [
-      { id: "1S1", kategori: "Rendah" },
-      { id: "1S2", kategori: "Rendah" },
-      { id: "2S1", kategori: "Rendah" },
-      { id: "2S2", kategori: "Rendah" },
-      { id: "3S1", kategori: "Rendah" },
-      { id: "3S2", kategori: "Rendah" },
-      { id: "3S3", kategori: "Rendah" },
-      { id: "4S1", kategori: "Atas" },
-      { id: "4S2", kategori: "Atas" },
-      { id: "4S3", kategori: "Atas" },
-      { id: "5S1", kategori: "Atas" },
-      { id: "5S2", kategori: "Atas" },
-      { id: "5S3", kategori: "Atas" }
+    // Senarai Kelas
+    const KELAS_RENDAH = ["1S1", "1S2", "2S1", "2S2", "3S1", "3S2", "3S3"];
+    const KELAS_ATAS   = ["4S1", "4S2", "4S3", "5S1", "5S2", "5S3"];
+    const SEMUA_KELAS  = [...KELAS_RENDAH, ...KELAS_ATAS];
+
+    // Struktur Kriteria Borang Penilaian
+    const KRITERIA = [
+      // Kategori 1: Kebersihan (0-3)
+      { id: "lantai", nama: "Lantai", max: 3, kat: "kebersihan" },
+      { id: "tingkap", nama: "Tingkap", max: 3, kat: "kebersihan" },
+      { id: "papanPutih", nama: "Papan Putih", max: 3, kat: "kebersihan" },
+      { id: "sub_kebersihan", nama: "JUMLAH KEBERSIHAN (/9)", isSub: true, kat: "kebersihan" },
+
+      // Kategori 2: Kekemasan (0-3)
+      { id: "alasMeja", nama: "Alas Meja Murid & Guru", max: 3, kat: "kekemasan" },
+      { id: "susunanMeja", nama: "Susunan Meja & Kerusi", max: 3, kat: "kekemasan" },
+      { id: "papanKenyataan", nama: "Papan Kenyataan", max: 3, kat: "kekemasan" },
+      { id: "langsir", nama: "Langsir", max: 3, kat: "kekemasan" },
+      { id: "sub_kekemasan", nama: "JUMLAH KEKEMASAN (/12)", isSub: true, kat: "kekemasan" },
+
+      // Kategori 3: PAK21 (0-3)
+      { id: "carta", nama: "Carta Organisasi", max: 3, kat: "pak21" },
+      { id: "bertugas", nama: "Jadual Bertugas", max: 3, kat: "pak21" },
+      { id: "jadualKelas", nama: "Jadual Kelas", max: 3, kat: "pak21" },
+      { id: "hariLahir", nama: "Sudut Hari Lahir", max: 3, kat: "pak21" },
+      { id: "hasilKerja", nama: "Sudut Hasil Kerja Murid", max: 3, kat: "pak21" },
+      { id: "parking", nama: "Parking Lot", max: 3, kat: "pak21" },
+      { id: "ganjaran", nama: "Sudut Ganjaran & Pencapaian", max: 3, kat: "pak21" },
+      { id: "kataHikmah", nama: "Kata-Kata Hikmah", max: 3, kat: "pak21" },
+      { id: "sub_pak21", nama: "JUMLAH PAK21 (/24)", isSub: true, kat: "pak21" },
+
+      // Kategori 4: Kreativiti (1-5)
+      { id: "kreativiti", nama: "KREATIVITI & KECERIAAN (1-5)", max: 5, min: 1, kat: "kreativiti" },
+
+      // Jumlah Keseluruhan
+      { id: "jumlah_keseluruhan", nama: "JUMLAH KESELURUHAN (/50)", isTotal: true }
     ];
 
+    // Data Pemarkahan Setiap Kelas Dalam Memori
     const dataSkor = {};
-    senaraiKelas.forEach(k => {
-      dataSkor[k.id] = {
+    SEMUA_KELAS.forEach(k => {
+      dataSkor[k] = {
         lantai: 0, tingkap: 0, papanPutih: 0,
         alasMeja: 0, susunanMeja: 0, papanKenyataan: 0, langsir: 0,
         carta: 0, bertugas: 0, jadualKelas: 0, hariLahir: 0,
         hasilKerja: 0, parking: 0, ganjaran: 0, kataHikmah: 0,
-        kreativiti: 0,
-        kebersihan: 0, kekemasan: 0, pak21: 0, jumlah: 0
+        kreativiti: 1,
+        kebersihan: 0, kekemasan: 0, pak21: 0, jumlah: 1
       };
     });
 
-    let kelasSemasa = "1S1";
+    let chartInstance = null;
 
+    // Inisialisasi Apabila Laman Dimuat
     window.addEventListener("DOMContentLoaded", () => {
-      const today = new Date();
-      document.getElementById("tarikh").value = today.toISOString().split("T")[0];
-      const hours = String(today.getHours()).padStart(2, '0');
-      const minutes = String(today.getMinutes()).padStart(2, '0');
-      document.getElementById("masa").value = `${hours}:${minutes}`;
+      const now = new Date();
+      document.getElementById("info-tarikh").value = now.toISOString().split("T")[0];
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      document.getElementById("info-masa").value = `${hh}:${mm}`;
 
-      muatDataKelas(kelasSemasa);
-      kemaskiniRanking();
+      binaJadual("tbody-rendah", KELAS_RENDAH);
+      binaJadual("tbody-atas", KELAS_ATAS);
+
+      SEMUA_KELAS.forEach(k => kiraMarkahKelas(k));
+      kemaskiniSemua();
     });
 
-    function tukarKelas() {
-      simpanKelasKeMemori();
-      kelasSemasa = document.getElementById("select-kelas").value;
-      muatDataKelas(kelasSemasa);
+    // Bina Jadual Matriks dengan Dropdown
+    function binaJadual(tbodyId, senaraiKelas) {
+      const tbody = document.getElementById(tbodyId);
+      tbody.innerHTML = "";
+
+      KRITERIA.forEach(item => {
+        const tr = document.createElement("tr");
+
+        if (item.isTotal) {
+          tr.className = "bg-emerald-100/80 font-bold border-t-2 border-emerald-400";
+        } else if (item.isSub) {
+          tr.className = "bg-slate-100 font-semibold text-slate-700";
+        } else {
+          tr.className = "hover:bg-slate-50 transition";
+        }
+
+        // Lajur Nama Kriteria
+        const tdNama = document.createElement("td");
+        tdNama.className = `py-2 px-3 border-r ${item.isTotal ? 'text-emerald-900 font-extrabold text-xs' : (item.isSub ? 'text-slate-800' : 'text-slate-600')}`;
+        tdNama.innerText = item.nama;
+        tr.appendChild(tdNama);
+
+        // Lajur Input Dropdown bagi setiap kelas
+        senaraiKelas.forEach(kelasId => {
+          const td = document.createElement("td");
+          td.className = "py-1.5 px-1.5 text-center border-r";
+
+          if (item.isTotal) {
+            td.innerHTML = `<span id="cell-${kelasId}-total" class="font-extrabold text-sm text-emerald-800">1</span>`;
+          } else if (item.isSub) {
+            td.innerHTML = `<span id="cell-${kelasId}-${item.id}" class="font-bold text-slate-700">0</span>`;
+          } else {
+            // Dropdown Menu
+            const select = document.createElement("select");
+            select.className = "w-full bg-white border border-slate-300 rounded px-1 py-1 font-semibold text-center text-xs focus:ring-1 focus:ring-emerald-500 outline-none";
+            
+            const minVal = item.min || 0;
+            const maxVal = item.max || 3;
+
+            for (let v = minVal; v <= maxVal; v++) {
+              const opt = document.createElement("option");
+              opt.value = v;
+              opt.innerText = v;
+              select.appendChild(opt);
+            }
+
+            select.value = dataSkor[kelasId][item.id] || minVal;
+
+            select.onchange = (e) => {
+              dataSkor[kelasId][item.id] = parseInt(e.target.value) || 0;
+              kiraMarkahKelas(kelasId);
+              kemaskiniSemua();
+            };
+
+            td.appendChild(select);
+          }
+          tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+      });
     }
 
-    function muatDataKelas(id) {
-      document.getElementById("label-kelas-aktif").innerText = id;
-      const d = dataSkor[id];
-      document.getElementById("input-lantai").value = d.lantai || 0;
-      document.getElementById("input-tingkap").value = d.tingkap || 0;
-      document.getElementById("input-papan-putih").value = d.papanPutih || 0;
-      document.getElementById("input-alas-meja").value = d.alasMeja || 0;
-      document.getElementById("input-susunan-meja").value = d.susunanMeja || 0;
-      document.getElementById("input-papan-kenyataan").value = d.papanKenyataan || 0;
-      document.getElementById("input-langsir").value = d.langsir || 0;
-      document.getElementById("input-carta").value = d.carta || 0;
-      document.getElementById("input-bertugas").value = d.bertugas || 0;
-      document.getElementById("input-jadual-kelas").value = d.jadualKelas || 0;
-      document.getElementById("input-hari-lahir").value = d.hariLahir || 0;
-      document.getElementById("input-hasil-kerja").value = d.hasilKerja || 0;
-      document.getElementById("input-parking").value = d.parking || 0;
-      document.getElementById("input-ganjaran").value = d.ganjaran || 0;
-      document.getElementById("input-kata-hikmah").value = d.kataHikmah || 0;
-      document.getElementById("input-kreativiti").value = d.kreativiti || 0;
-      kiraMarkah();
-    }
+    // Kira markah satu kelas
+    function kiraMarkahKelas(kelasId) {
+      const d = dataSkor[kelasId];
+      d.kebersihan = (d.lantai || 0) + (d.tingkap || 0) + (d.papanPutih || 0);
+      d.kekemasan  = (d.alasMeja || 0) + (d.susunanMeja || 0) + (d.papanKenyataan || 0) + (d.langsir || 0);
+      d.pak21      = (d.carta || 0) + (d.bertugas || 0) + (d.jadualKelas || 0) + (d.hariLahir || 0) +
+                     (d.hasilKerja || 0) + (d.parking || 0) + (d.ganjaran || 0) + (d.kataHikmah || 0);
+      d.jumlah     = d.kebersihan + d.kekemasan + d.pak21 + (d.kreativiti || 1);
 
-    function kiraMarkah() {
-      const parseVal = (id, max) => Math.min(Math.max(parseInt(document.getElementById(id).value) || 0, 0), max);
+      const elKeb = document.getElementById(`cell-${kelasId}-sub_kebersihan`);
+      if (elKeb) elKeb.innerText = d.kebersihan;
 
-      const lantai = parseVal("input-lantai", 3);
-      const tingkap = parseVal("input-tingkap", 3);
-      const papanPutih = parseVal("input-papan-putih", 3);
-      const kebersihan = lantai + tingkap + papanPutih;
-      document.getElementById("sub-kebersihan").innerText = `${kebersihan} / 9`;
+      const elKek = document.getElementById(`cell-${kelasId}-sub_kekemasan`);
+      if (elKek) elKek.innerText = d.kekemasan;
 
-      const alasMeja = parseVal("input-alas-meja", 3);
-      const susunanMeja = parseVal("input-susunan-meja", 3);
-      const papanKenyataan = parseVal("input-papan-kenyataan", 3);
-      const langsir = parseVal("input-langsir", 3);
-      const kekemasan = alasMeja + susunanMeja + papanKenyataan + langsir;
-      document.getElementById("sub-kekemasan").innerText = `${kekemasan} / 12`;
+      const elPak = document.getElementById(`cell-${kelasId}-sub_pak21`);
+      if (elPak) elPak.innerText = d.pak21;
 
-      const carta = parseVal("input-carta", 3);
-      const bertugas = parseVal("input-bertugas", 3);
-      const jadualKelas = parseVal("input-jadual-kelas", 3);
-      const hariLahir = parseVal("input-hari-lahir", 3);
-      const hasilKerja = parseVal("input-hasil-kerja", 3);
-      const parking = parseVal("input-parking", 3);
-      const ganjaran = parseVal("input-ganjaran", 3);
-      const kataHikmah = parseVal("input-kata-hikmah", 3);
-      const pak21 = carta + bertugas + jadualKelas + hariLahir + hasilKerja + parking + ganjaran + kataHikmah;
-      document.getElementById("sub-pak21").innerText = `${pak21} / 24`;
-
-      const kreativiti = parseVal("input-kreativiti", 5);
-
-      const jumlah = kebersihan + kekemasan + pak21 + kreativiti;
-      document.getElementById("total-kelas-aktif").innerHTML = `${jumlah} <span class="text-lg font-normal text-slate-500">/ 50</span>`;
-
-      return {
-        lantai, tingkap, papanPutih, kebersihan,
-        alasMeja, susunanMeja, papanKenyataan, langsir, kekemasan,
-        carta, bertugas, jadualKelas, hariLahir, hasilKerja, parking, ganjaran, kataHikmah, pak21,
-        kreativiti, jumlah
-      };
-    }
-
-    function simpanKelasKeMemori() {
-      const skor = kiraMarkah();
-      dataSkor[kelasSemasa] = skor;
-      kemaskiniRanking();
-    }
-
-    function kemaskiniRanking() {
-      const senaraiRendah = senaraiKelas.filter(k => k.kategori === "Rendah").map(k => ({
-        kelas: k.id,
-        jumlah: dataSkor[k.id].jumlah,
-        kategori: "Men. Rendah"
-      })).sort((a, b) => b.jumlah - a.jumlah);
-
-      const senaraiAtas = senaraiKelas.filter(k => k.kategori === "Atas").map(k => ({
-        kelas: k.id,
-        jumlah: dataSkor[k.id].jumlah,
-        kategori: "Men. Atas"
-      })).sort((a, b) => b.jumlah - a.jumlah);
-
-      paparkanJadual("list-ranking-rendah", "podium-rendah", senaraiRendah);
-      paparkanJadual("list-ranking-atas", "podium-atas", senaraiAtas);
-
-      // Semak kelas kurang 15 markah
-      const bawah15 = [...senaraiRendah, ...senaraiAtas].filter(k => k.jumlah > 0 && k.jumlah < 15);
-      const alertBox = document.getElementById("alert-kurang-15");
-      const listSpan = document.getElementById("senarai-kurang-15");
-
-      if (bawah15.length > 0) {
-        alertBox.classList.remove("hidden");
-        listSpan.innerText = bawah15.map(k => `${k.kelas} (${k.jumlah}/50)`).join(", ");
-      } else {
-        alertBox.classList.add("hidden");
+      const elTot = document.getElementById(`cell-${kelasId}-total`);
+      if (elTot) {
+        elTot.innerText = d.jumlah;
+        elTot.className = d.jumlah < 15 ? "font-extrabold text-sm text-rose-600" : "font-extrabold text-sm text-emerald-800";
       }
     }
 
-    function paparkanJadual(tBodyId, podiumId, senarai) {
-      const tbody = document.getElementById(tBodyId);
+    // Navigasi 3 Tab Utama
+    function bukaTab(tab) {
+      ['penilaian', 'dashboard', 'keputusan'].forEach(t => {
+        document.getElementById(`page-${t}`).classList.add('hidden');
+        const navBtn = document.getElementById(`nav-${t}`);
+        navBtn.className = "px-4 py-2 rounded-lg text-emerald-100 hover:text-white transition flex items-center gap-2";
+      });
+
+      document.getElementById(`page-${tab}`).classList.remove('hidden');
+      const activeNav = document.getElementById(`nav-${tab}`);
+      activeNav.className = "px-4 py-2 rounded-lg bg-white text-emerald-800 shadow transition flex items-center gap-2";
+
+      if (tab === 'dashboard') {
+        janaGraf();
+      }
+      kemaskiniSemua();
+    }
+
+    // Tukar Paparan Muka Menengah Rendah / Atas
+    function pilihKategoriPenilaian(kat) {
+      const btnRendah = document.getElementById("sub-rendah-btn");
+      const btnAtas = document.getElementById("sub-atas-btn");
+      const mukaRendah = document.getElementById("muka-rendah");
+      const mukaAtas = document.getElementById("muka-atas");
+
+      if (kat === 'rendah') {
+        mukaRendah.classList.remove('hidden');
+        mukaAtas.classList.add('hidden');
+        btnRendah.className = "px-4 py-1.5 rounded-md font-bold text-xs bg-emerald-600 text-white shadow transition";
+        btnAtas.className = "px-4 py-1.5 rounded-md font-bold text-xs text-slate-600 hover:text-emerald-700 transition";
+      } else {
+        mukaRendah.classList.add('hidden');
+        mukaAtas.classList.remove('hidden');
+        btnAtas.className = "px-4 py-1.5 rounded-md font-bold text-xs bg-emerald-600 text-white shadow transition";
+        btnRendah.className = "px-4 py-1.5 rounded-md font-bold text-xs text-slate-600 hover:text-emerald-700 transition";
+      }
+    }
+
+    // Kemaskini Ranking, Podium & Dashboard
+    function kemaskiniSemua() {
+      const rankRendah = KELAS_RENDAH.map(k => ({ kelas: k, ...dataSkor[k] })).sort((a,b) => b.jumlah - a.jumlah);
+      const rankAtas   = KELAS_ATAS.map(k => ({ kelas: k, ...dataSkor[k] })).sort((a,b) => b.jumlah - a.jumlah);
+
+      // Kemaskini Laporan Rasmi
+      document.getElementById("rep-minggu").innerText = document.getElementById("info-minggu").value || "-";
+      document.getElementById("rep-tarikh").innerText = document.getElementById("info-tarikh").value || "-";
+      document.getElementById("rep-masa").innerText = document.getElementById("info-masa").value || "-";
+      document.getElementById("rep-penilai-sign").innerText = `(${document.getElementById("info-penilai").value || "..................................................."})`;
+
+      // Dashboard KPI
+      document.getElementById("dash-top-rendah").innerText = `${rankRendah[0].kelas} (${rankRendah[0].jumlah}m)`;
+      document.getElementById("dash-top-atas").innerText = `${rankAtas[0].kelas} (${rankAtas[0].jumlah}m)`;
+      
+      const totalSemua = SEMUA_KELAS.reduce((acc, k) => acc + dataSkor[k].jumlah, 0);
+      const purata = (totalSemua / SEMUA_KELAS.length).toFixed(1);
+      document.getElementById("dash-purata").innerText = `${purata} / 50`;
+
+      const bawah15 = SEMUA_KELAS.filter(k => dataSkor[k].jumlah < 15);
+      document.getElementById("dash-count-bawah15").innerText = `${bawah15.length} Kelas`;
+      document.getElementById("rep-bawah15").innerText = bawah15.length > 0 ? bawah15.map(k => `${k} (${dataSkor[k].jumlah}m)`).join(", ") : "Tiada kelas di bawah 15 markah.";
+
+      // Bina Jadual Keputusan Rasmi
+      binaJadualKeputusan("table-rank-rendah", rankRendah);
+      binaJadualKeputusan("table-rank-atas", rankAtas);
+
+      // Podium Pemenang
+      binaPodium("podium-rendah", rankRendah);
+      binaPodium("podium-atas", rankAtas);
+    }
+
+    function binaJadualKeputusan(tbodyId, senarai) {
+      const tbody = document.getElementById(tbodyId);
       tbody.innerHTML = "";
-
-      senarai.forEach((item, index) => {
-        let badge = `<span class="font-bold text-slate-600">${index + 1}</span>`;
-        if (index === 0) badge = `<span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-bold text-xs"><i class="fa-solid fa-crown mr-1"></i> Pertama</span>`;
-        else if (index === 1) badge = `<span class="bg-slate-200 text-slate-700 px-2 py-0.5 rounded-full font-bold text-xs">Kedua</span>`;
-        else if (index === 2) badge = `<span class="bg-amber-50 text-amber-800 px-2 py-0.5 rounded-full font-bold text-xs">Ketiga</span>`;
-
+      senarai.forEach((item, idx) => {
         const tr = document.createElement("tr");
-        tr.className = index < 3 ? "bg-slate-50/50 font-semibold" : "";
+        tr.className = idx === 0 ? "bg-amber-50/60 font-semibold" : "";
         tr.innerHTML = `
-          <td class="py-2 px-3">${badge}</td>
-          <td class="py-2 px-3 font-bold text-slate-700">${item.kelas}</td>
-          <td class="py-2 px-3 text-right font-extrabold ${item.jumlah < 15 && item.jumlah > 0 ? 'text-rose-600' : 'text-emerald-600'}">${item.jumlah}</td>
+          <td class="py-1.5 px-2 text-center font-bold">${idx + 1}</td>
+          <td class="py-1.5 px-2 font-bold text-slate-800">${item.kelas}</td>
+          <td class="py-1.5 px-2 text-center text-slate-600">${item.kebersihan}</td>
+          <td class="py-1.5 px-2 text-center text-slate-600">${item.kekemasan}</td>
+          <td class="py-1.5 px-2 text-center text-slate-600">${item.pak21}</td>
+          <td class="py-1.5 px-2 text-center text-slate-600">${item.kreativiti}</td>
+          <td class="py-1.5 px-2 text-right font-extrabold ${item.jumlah < 15 ? 'text-rose-600' : 'text-emerald-700'}">${item.jumlah}</td>
         `;
         tbody.appendChild(tr);
       });
+    }
 
-      const podium = document.getElementById(podiumId);
-      podium.innerHTML = `
-        <div class="bg-slate-100 p-2 rounded-lg border">
-          <div class="text-[10px] text-slate-500 font-bold uppercase">Kedua</div>
-          <div class="font-extrabold text-sm text-slate-800">${senarai[1] ? senarai[1].kelas : '-'}</div>
-          <div class="text-xs font-semibold text-slate-600">${senarai[1] ? senarai[1].jumlah + ' m' : '0'}</div>
+    function binaPodium(podiumId, senarai) {
+      const el = document.getElementById(podiumId);
+      el.innerHTML = `
+        <div class="bg-white p-2.5 rounded-lg border shadow-sm">
+          <div class="text-[10px] font-bold text-slate-400 uppercase">Kedua</div>
+          <div class="text-sm font-extrabold text-slate-800">${senarai[1] ? senarai[1].kelas : '-'}</div>
+          <div class="text-xs font-semibold text-slate-500">${senarai[1] ? senarai[1].jumlah + ' m' : '0'}</div>
         </div>
-        <div class="bg-amber-100 p-2 rounded-lg border border-amber-300">
-          <div class="text-[10px] text-amber-700 font-bold uppercase"><i class="fa-solid fa-trophy"></i> Pertama</div>
-          <div class="font-extrabold text-base text-amber-900">${senarai[0] ? senarai[0].kelas : '-'}</div>
+        <div class="bg-amber-100/80 p-2.5 rounded-lg border border-amber-300 shadow-sm">
+          <div class="text-[10px] font-bold text-amber-800 uppercase"><i class="fa-solid fa-crown text-amber-600"></i> Pertama</div>
+          <div class="text-base font-black text-amber-950">${senarai[0] ? senarai[0].kelas : '-'}</div>
           <div class="text-xs font-bold text-amber-800">${senarai[0] ? senarai[0].jumlah + ' m' : '0'}</div>
         </div>
-        <div class="bg-slate-100 p-2 rounded-lg border">
-          <div class="text-[10px] text-slate-500 font-bold uppercase">Ketiga</div>
-          <div class="font-extrabold text-sm text-slate-800">${senarai[2] ? senarai[2].kelas : '-'}</div>
-          <div class="text-xs font-semibold text-slate-600">${senarai[2] ? senarai[2].jumlah + ' m' : '0'}</div>
+        <div class="bg-white p-2.5 rounded-lg border shadow-sm">
+          <div class="text-[10px] font-bold text-slate-400 uppercase">Ketiga</div>
+          <div class="text-sm font-extrabold text-slate-800">${senarai[2] ? senarai[2].kelas : '-'}</div>
+          <div class="text-xs font-semibold text-slate-500">${senarai[2] ? senarai[2].jumlah + ' m' : '0'}</div>
         </div>
       `;
     }
 
+    // Graf Interaktif Chart.js
+    function janaGraf() {
+      const ctx = document.getElementById('chartMarkah').getContext('2d');
+      const labels = SEMUA_KELAS;
+      const data = SEMUA_KELAS.map(k => dataSkor[k].jumlah);
+      const colors = SEMUA_KELAS.map(k => dataSkor[k].jumlah < 15 ? '#f43f5e' : (KELAS_RENDAH.includes(k) ? '#3b82f6' : '#f59e0b'));
+
+      if (chartInstance) {
+        chartInstance.destroy();
+      }
+
+      chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Jumlah Markah (/50)',
+            data: data,
+            backgroundColor: colors,
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 50,
+              ticks: { stepSize: 10 }
+            }
+          },
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+    }
+
+    // Penghantaran ke Google Sheets
     async function hantarKeGoogleSheet() {
-      simpanKelasKeMemori();
+      const btn = document.getElementById("btn-hantar-sheets");
       const statusEl = document.getElementById("status-hantar");
-      const btn = document.getElementById("btn-hantar");
 
       const payload = {
-        minggu: document.getElementById("minggu").value || "-",
-        tarikh: document.getElementById("tarikh").value || "-",
-        masa: document.getElementById("masa").value || "-",
-        penilai: document.getElementById("penilai").value || "-",
-        senaraiKelas: senaraiKelas.map(k => ({
-          kelas: k.id,
-          kategori: k.kategori === "Rendah" ? "Menengah Rendah" : "Menengah Atas",
-          kebersihan: dataSkor[k.id].kebersihan,
-          kekemasan: dataSkor[k.id].kekemasan,
-          pak21: dataSkor[k.id].pak21,
-          kreativiti: dataSkor[k.id].kreativiti,
-          jumlah: dataSkor[k.id].jumlah
+        minggu: document.getElementById("info-minggu").value || "-",
+        tarikh: document.getElementById("info-tarikh").value || "-",
+        masa: document.getElementById("info-masa").value || "-",
+        penilai: document.getElementById("info-penilai").value || "-",
+        senaraiKelas: SEMUA_KELAS.map(k => ({
+          kelas: k,
+          kategori: KELAS_RENDAH.includes(k) ? "Menengah Rendah" : "Menengah Atas",
+          kebersihan: dataSkor[k].kebersihan,
+          kekemasan: dataSkor[k].kekemasan,
+          pak21: dataSkor[k].pak21,
+          kreativiti: dataSkor[k].kreativiti,
+          jumlah: dataSkor[k].jumlah
         }))
       };
 
       try {
         btn.disabled = true;
-        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sedang Menghantar...`;
-        statusEl.className = "text-xs mt-3 text-slate-500 font-medium";
-        statusEl.innerText = "Menghantar data ke Google Sheets DATABASE KECERIAAN KELAS...";
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menghantar...`;
+        statusEl.className = "text-center font-bold text-xs text-slate-500";
+        statusEl.innerText = "Sedang merekod ke Google Sheets DATABASE KECERIAAN KELAS...";
 
-        await fetch(SCRIPT_URL, {
+        await fetch(WEB_APP_URL, {
           method: "POST",
           mode: "no-cors",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
 
-        statusEl.className = "text-xs mt-3 text-emerald-600 font-bold";
-        statusEl.innerText = "✓ Rekod berjaya dihantar dan disimpan ke Google Sheets!";
+        statusEl.className = "text-center font-bold text-xs text-emerald-600";
+        statusEl.innerText = "✓ Rekod berjaya disimpan ke Google Sheets!";
       } catch (err) {
-        statusEl.className = "text-xs mt-3 text-rose-600 font-bold";
+        statusEl.className = "text-center font-bold text-xs text-rose-600";
         statusEl.innerText = "✗ Ralat semasa menghantar: " + err.message;
       } finally {
         btn.disabled = false;
-        btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Hantar Semua Keputusan`;
+        btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Google Sheet`;
       }
     }
   </script>
